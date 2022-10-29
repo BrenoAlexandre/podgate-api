@@ -1,4 +1,5 @@
 import ReservationRepository from '../../services/implementations/reservationRepository';
+import { IGetReservationRequestDTO } from './getReservationRequestDTO';
 import { IGetReservationResponseDTO } from './getReservationResponseDTO';
 
 class GetReservationUseCase {

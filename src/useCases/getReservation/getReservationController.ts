@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { IGetReservationRequestDTO } from './getReservationRequestDTO';
 import { IGetReservationResponseDTO } from './getReservationResponseDTO';
 import GetReservationUseCase from './getReservationUseCase';
 

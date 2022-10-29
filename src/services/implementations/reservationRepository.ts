@@ -9,7 +9,7 @@ class ReservationRepository implements IReservationRepository {
       date: new Date(),
       places: 2,
       value: 100,
-      reservationId: String(Math.floor(Math.random() * (100 ^ 2))),
+      reservationId: '1',
     },
     {
       name: 'Arthur Farais',
@@ -17,7 +17,7 @@ class ReservationRepository implements IReservationRepository {
       date: new Date(),
       places: 8,
       value: 400,
-      reservationId: String(Math.floor(Math.random() * (100 ^ 2))),
+      reservationId: '2',
     },
     {
       name: 'Johnsons Lopez',
@@ -25,7 +25,15 @@ class ReservationRepository implements IReservationRepository {
       date: new Date(),
       places: 5,
       value: 300,
-      reservationId: String(Math.floor(Math.random() * (100 ^ 2))),
+      reservationId: '3',
+    },
+    {
+      name: 'Eduardo Garcia',
+      phone: '51 9337853',
+      date: new Date(),
+      places: 2,
+      value: 120,
+      reservationId: '4',
     },
   ];
 
@@ -47,11 +55,19 @@ class ReservationRepository implements IReservationRepository {
   };
 
   public getMany = async () => {
-    return 3;
+    return this.reservationsMock;
   };
 
-  public update = async (data: any) => {
-    return 4;
+  public update = async (reservationId: string, data: any) => {
+    let found = this.reservationsMock.find(
+      (reservation) => reservation.reservationId === reservationId
+    );
+
+    if (found) {
+      found = { ...found, ...data };
+    }
+
+    return found;
   };
 
   public delete = async (id: string) => {

@@ -1,3 +1,3 @@
-interface IGetReservationRequestDTO {
+export interface IGetReservationRequestDTO {
   reservationId: string;
 }
