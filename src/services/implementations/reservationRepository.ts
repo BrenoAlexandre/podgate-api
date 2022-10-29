@@ -9,7 +9,7 @@ class ReservationRepository implements IReservationRepository {
       date: new Date(),
       places: 2,
       value: 100,
-      reservationId: Math.floor(Math.random() * (100 ^ 2)),
+      reservationId: String(Math.floor(Math.random() * (100 ^ 2))),
     },
     {
       name: 'Arthur Farais',
@@ -17,7 +17,15 @@ class ReservationRepository implements IReservationRepository {
       date: new Date(),
       places: 8,
       value: 400,
-      reservationId: Math.floor(Math.random() * (100 ^ 2)),
+      reservationId: String(Math.floor(Math.random() * (100 ^ 2))),
+    },
+    {
+      name: 'Johnsons Lopez',
+      phone: '51 9537853',
+      date: new Date(),
+      places: 5,
+      value: 300,
+      reservationId: String(Math.floor(Math.random() * (100 ^ 2))),
     },
   ];
 
@@ -28,11 +36,11 @@ class ReservationRepository implements IReservationRepository {
       date: new Date(),
       places: 3,
       value: 150,
-      reservationId: Math.floor(Math.random() * (100 ^ 2)),
+      reservationId: String(Math.floor(Math.random() * (100 ^ 2))),
     };
   };
 
-  public getOne = async (id: number): Promise<IReservation | undefined> => {
+  public getOne = async (id: string): Promise<IReservation | undefined> => {
     return this.reservationsMock.find(
       (reservation) => reservation.reservationId === id
     );
@@ -46,8 +54,11 @@ class ReservationRepository implements IReservationRepository {
     return 4;
   };
 
-  public delete = async (data: any) => {
-    return 5;
+  public delete = async (id: string) => {
+    const deletado = this.reservationsMock.find(
+      (reservation) => reservation.reservationId === id
+    );
+    return !!deletado;
   };
 }
 

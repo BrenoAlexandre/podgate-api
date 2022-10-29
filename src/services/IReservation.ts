@@ -4,5 +4,5 @@ export interface IReservation {
   date: Date;
   places: number;
   value: number;
-  reservationId: number;
+  reservationId: string;
 }

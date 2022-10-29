@@ -1,3 +1,3 @@
 interface IGetReservationRequestDTO {
-  reservationId: number;
+  reservationId: string;
 }

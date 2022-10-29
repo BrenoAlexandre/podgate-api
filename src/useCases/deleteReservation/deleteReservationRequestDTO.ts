@@ -1,0 +1,3 @@
+interface IDeleteReservationRequestDTO {
+  reservationId: string;
+}

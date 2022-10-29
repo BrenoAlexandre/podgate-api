@@ -16,8 +16,10 @@ class GetReservationController {
 
       return res.status(200).send(result);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       next();
     }
   }
 }
+
+export default GetReservationController;
