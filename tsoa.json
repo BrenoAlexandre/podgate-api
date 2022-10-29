@@ -1,0 +1,21 @@
+{
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/**/*.controller.ts"],
+  "spec": {
+    "outputDirectory": "src",
+    "specVersion": 3,
+    "schemes": ["http", "https"],
+    "host": "localhost:3001",
+    "basePath": "/api/v1"
+  },
+  "swagger": {
+    "outputDirectory": "./routes"
+  },
+  "routes": {
+    "basePath": "/api/v1",
+    "entryFile": "src/index.ts",
+    "routesDir": "src/routes"
+  },
+  "ignore": ["**/node_modules/**"]
+}
