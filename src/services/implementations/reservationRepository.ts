@@ -4,7 +4,7 @@ import { IReservationRepository } from '../IReservationRepository';
 class ReservationRepository implements IReservationRepository {
   private reservationsMock: IReservation[] = [
     {
-      name: 'Brone Alaxendra',
+      name: 'Brian Andre',
       phone: '51 987654321',
       date: new Date(),
       places: 2,
@@ -48,17 +48,22 @@ class ReservationRepository implements IReservationRepository {
     };
   };
 
-  public getOne = async (id: string): Promise<IReservation | undefined> => {
+  public getOne = async (
+    reservationId: string
+  ): Promise<IReservation | undefined> => {
     return this.reservationsMock.find(
-      (reservation) => reservation.reservationId === id
+      (reservation) => reservation.reservationId === reservationId
     );
   };
 
-  public getMany = async () => {
+  public getMany = async (): Promise<IReservation[] | undefined> => {
     return this.reservationsMock;
   };
 
-  public update = async (reservationId: string, data: any) => {
+  public update = async (
+    reservationId: string,
+    data: any
+  ): Promise<IReservation | undefined> => {
     let found = this.reservationsMock.find(
       (reservation) => reservation.reservationId === reservationId
     );
@@ -70,7 +75,7 @@ class ReservationRepository implements IReservationRepository {
     return found;
   };
 
-  public delete = async (id: string) => {
+  public delete = async (id: string): Promise<boolean> => {
     const deletado = this.reservationsMock.find(
       (reservation) => reservation.reservationId === id
     );

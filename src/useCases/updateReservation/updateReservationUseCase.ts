@@ -13,7 +13,7 @@ class UpdateReservationUseCase {
     );
 
     if (!updatedReservation) {
-      throw new Error('Nenhuma reserva com esse id.');
+      throw new Error('Reservation not found.');
     }
 
     return updatedReservation;

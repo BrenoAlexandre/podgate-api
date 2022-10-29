@@ -6,7 +6,7 @@ class DeleteReservationController {
 
   public async handler(req: Request, res: Response, next: NextFunction) {
     try {
-      const { reservationId } = req.body;
+      const { reservationId } = req.params;
 
       const data: IDeleteReservationRequestDTO = { reservationId };
 

@@ -9,7 +9,7 @@ class DeleteReservationUseCase {
     const result = await this.reservationRepository.delete(reservationId);
 
     if (!result) {
-      throw new Error('Reserva não encontrada.');
+      throw new Error('Reservation not found.');
     }
   }
 }

@@ -1,7 +1,12 @@
+import { IReservation } from './IReservation';
+
 export interface IReservationRepository {
-  create: (data: any) => any;
-  getOne: (data: any) => any;
-  getMany: () => any;
-  update: (reservationId: string, data: any) => any;
-  delete: (data: any) => any;
+  create: (data: any) => Promise<IReservation>;
+  getOne: (reservationId: string) => Promise<IReservation | undefined>;
+  getMany: () => Promise<IReservation[] | undefined>;
+  update: (
+    reservationId: string,
+    data: any
+  ) => Promise<IReservation | undefined>;
+  delete: (data: any) => Promise<boolean>;
 }

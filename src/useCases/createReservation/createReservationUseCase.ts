@@ -11,7 +11,7 @@ class CreateReservationUseCase {
     const result = await this.reservationRepository.create(data);
 
     if (!result) {
-      throw new Error('Erro ao criar reserva');
+      throw new Error('Unable to create reservation.');
     }
 
     return result;

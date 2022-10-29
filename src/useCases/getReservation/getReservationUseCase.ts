@@ -11,7 +11,7 @@ class GetReservationUseCase {
     const result = await this.reservationRepository.getOne(reservationId);
 
     if (!result) {
-      throw new Error('Reserva não encontrada');
+      throw new Error('Reservation not found.');
     }
 
     return result;
