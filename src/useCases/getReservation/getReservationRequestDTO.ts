@@ -1,0 +1,3 @@
+interface IGetReservationRequestDTO {
+  reservationId: number;
+}

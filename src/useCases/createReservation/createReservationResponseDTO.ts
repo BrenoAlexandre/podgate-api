@@ -1,7 +1,3 @@
-export interface ICreateReservationResponseDTO {
-  name: string;
-  phone: string;
-  date: Date;
-  places: number;
-  value: number;
-}
+import { IReservation } from '../../services/IReservation';
+
+export interface ICreateReservationResponseDTO extends IReservation {}
