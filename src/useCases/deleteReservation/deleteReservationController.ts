@@ -1,22 +1,26 @@
-import { NextFunction, Request, Response } from 'express';
+import {
+  Delete,
+  Path,
+  Response,
+  Route,
+  SuccessResponse,
+  Tags,
+} from '@tsoa/runtime';
+import { injectable } from 'tsyringe';
 import DeleteReservationUseCase from './deleteReservationUseCase';
 
-class DeleteReservationController {
+@injectable()
+@Route('/reservation')
+@Tags('reservations')
+export class DeleteReservationController {
   constructor(private deleteReservation: DeleteReservationUseCase) {}
 
-  public async handler(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { reservationId } = req.params;
+  @SuccessResponse(204, 'Continue')
+  @Response(404, 'Not found')
+  @Delete()
+  public async handler(@Path() reservationId: string) {
+    const data: IDeleteReservationRequestDTO = { reservationId };
 
-      const data: IDeleteReservationRequestDTO = { reservationId };
-
-      await this.deleteReservation.execute(data);
-
-      return res.status(204).send();
-    } catch (err) {
-      console.error(err);
-      next();
-    }
+    await this.deleteReservation.execute(data);
   }
 }
-export default DeleteReservationController;

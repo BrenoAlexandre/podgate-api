@@ -1,31 +1,41 @@
-import { Request, Response, NextFunction } from 'express';
+import {
+  Body,
+  Controller,
+  Post,
+  Response,
+  Route,
+  SuccessResponse,
+  Tags,
+} from '@tsoa/runtime';
+import { injectable } from 'tsyringe';
 import { ICreateReservationRequestDTO } from './createReservationRequestDTO';
 import { ICreateReservationResponseDTO } from './createReservationResponseDTO';
 import CreateReservationUseCase from './createReservationUseCase';
 
-class CreateReservationController {
-  constructor(private createReservationUseCase: CreateReservationUseCase) {}
+@injectable()
+@Route('/reservation')
+@Tags('reservations')
+export class CreateReservationController extends Controller {
+  constructor(private createReservationUseCase: CreateReservationUseCase) {
+    super();
+  }
 
-  public async handler(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { name, phone, date, places } = req.body;
+  @SuccessResponse(201, 'Created')
+  @Response(422, 'Unprocessable Entity')
+  @Post()
+  public async handler(@Body() request: ICreateReservationRequestDTO) {
+    const { name, phone, date, places } = request;
 
-      const data: ICreateReservationRequestDTO = {
-        name,
-        phone,
-        date,
-        places,
-      };
+    const data: ICreateReservationRequestDTO = {
+      name,
+      phone,
+      date,
+      places,
+    };
 
-      const result: ICreateReservationResponseDTO =
-        await this.createReservationUseCase.execute(data);
+    const result: ICreateReservationResponseDTO =
+      await this.createReservationUseCase.execute(data);
 
-      return res.status(201).send(result);
-    } catch (err) {
-      console.error(err);
-      next();
-    }
+    return result;
   }
 }
-
-export default CreateReservationController;

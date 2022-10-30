@@ -1,26 +1,31 @@
-import { NextFunction, Request, Response } from 'express';
+import {
+  Get,
+  Path,
+  Response,
+  Route,
+  SuccessResponse,
+  Tags,
+} from '@tsoa/runtime';
+import { injectable } from 'tsyringe';
 import { IGetReservationRequestDTO } from './getReservationRequestDTO';
 import { IGetReservationResponseDTO } from './getReservationResponseDTO';
 import GetReservationUseCase from './getReservationUseCase';
 
-class GetReservationController {
+@injectable()
+@Route('/reservation')
+@Tags('reservations')
+export class GetReservationController {
   constructor(private getReservationUseCase: GetReservationUseCase) {}
 
-  public async handler(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { reservationId } = req.params;
+  @SuccessResponse(200, 'Ok')
+  @Response(404, 'Not found')
+  @Get()
+  public async handler(@Path() reservationId: string) {
+    const data: IGetReservationRequestDTO = { reservationId };
 
-      const data: IGetReservationRequestDTO = { reservationId };
+    const result: IGetReservationResponseDTO =
+      await this.getReservationUseCase.execute(data);
 
-      const result: IGetReservationResponseDTO =
-        await this.getReservationUseCase.execute(data);
-
-      return res.status(200).send(result);
-    } catch (err) {
-      console.error(err);
-      next();
-    }
+    return result;
   }
 }
-
-export default GetReservationController;
