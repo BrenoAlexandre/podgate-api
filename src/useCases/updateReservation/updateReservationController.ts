@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  OperationId,
   Path,
   Put,
   Response,
@@ -23,6 +24,7 @@ export class UpdateReservationController extends Controller {
   @SuccessResponse(200, 'Ok')
   @Response(404, 'Not Found')
   @Put('{reservationId}')
+  @OperationId('updateReservation')
   public async handler(
     @Body() request: IUpdateReservationRequestDTO,
     @Path() reservationId: string

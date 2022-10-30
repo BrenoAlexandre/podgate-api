@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  OperationId,
   Path,
   Response,
   Route,
@@ -23,6 +24,7 @@ export class GetReservationController extends Controller {
   @SuccessResponse(200, 'Ok')
   @Response(404, 'Not found')
   @Get('{reservationId}')
+  @OperationId('getReservation')
   public async handler(@Path() reservationId: string) {
     const data: IGetReservationRequestDTO = { reservationId };
 

@@ -7,6 +7,7 @@ import {
   SuccessResponse,
   Tags,
 } from '@tsoa/runtime';
+import { OperationId } from 'tsoa';
 import { injectable } from 'tsyringe';
 import { ICreateReservationRequestDTO } from './createReservationRequestDTO';
 import { ICreateReservationResponseDTO } from './createReservationResponseDTO';
@@ -23,6 +24,7 @@ export class CreateReservationController extends Controller {
   @SuccessResponse(201, 'Created')
   @Response(422, 'Unprocessable Entity')
   @Post()
+  @OperationId('createReservation')
   public async handler(@Body() request: ICreateReservationRequestDTO) {
     const { name, phone, date, places } = request;
 

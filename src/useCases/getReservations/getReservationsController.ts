@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  OperationId,
   Response,
   Route,
   SuccessResponse,
@@ -20,6 +21,7 @@ export class GetReservationsController extends Controller {
   @Response(404, 'Not found')
   @SuccessResponse(200, 'Ok')
   @Get()
+  @OperationId('getReservations')
   public async handler() {
     const reservations = await this.getReservationsUseCase.execute();
 

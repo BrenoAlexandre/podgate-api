@@ -1,3 +1,3 @@
-interface IDeleteReservationRequestDTO {
+export interface IDeleteReservationRequestDTO {
   reservationId: string;
 }

@@ -1,6 +1,7 @@
 import {
   Controller,
   Delete,
+  OperationId,
   Path,
   Response,
   Route,
@@ -9,6 +10,7 @@ import {
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
 import DeleteReservationUseCase from './deleteReservationUseCase';
+import { IDeleteReservationRequestDTO } from './deleteReservationRequestDTO';
 
 @injectable()
 @Route('/reservation')
@@ -21,6 +23,7 @@ export class DeleteReservationController extends Controller {
   @SuccessResponse(204, 'Continue')
   @Response(404, 'Not found')
   @Delete('{reservationId}')
+  @OperationId('deleteReservation')
   public async handler(@Path() reservationId: string) {
     const data: IDeleteReservationRequestDTO = { reservationId };
 

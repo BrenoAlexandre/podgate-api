@@ -1,5 +1,6 @@
 import { singleton } from 'tsyringe';
 import ReservationRepository from '../../services/implementations/reservationRepository';
+import { IDeleteReservationRequestDTO } from './deleteReservationRequestDTO';
 
 @singleton()
 class DeleteReservationUseCase {

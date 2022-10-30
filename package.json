@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "predev": "tsoa spec-and-routes",
-    "dev": "concurrently \"nodemon -x tsoa spec-and-routes\""
+    "dev": "concurrently \"nodemon -x tsoa spec-and-routes\" \"ts-node-dev src/index.ts\" "
   },
   "dependencies": {
     "@tsoa/runtime": "^4.1.3",
