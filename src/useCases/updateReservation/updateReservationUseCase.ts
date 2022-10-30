@@ -1,6 +1,8 @@
+import { singleton } from 'tsyringe';
 import ReservationRepository from '../../services/implementations/reservationRepository';
 import { IUpdateReservationRequestDTO } from './updateReservationRequestDTO';
 
+@singleton()
 class UpdateReservationUseCase {
   constructor(private reservationRepository: ReservationRepository) {}
 

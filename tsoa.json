@@ -3,7 +3,8 @@
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/useCases/**/*Controller.ts"],
   "spec": {
-    "outputDirectory": "src",
+    "name": "TSOA TUTORIAL",
+    "outputDirectory": "src/routes",
     "specVersion": 3,
     "schemes": ["http", "https"],
     "host": "localhost:3001",

@@ -1,32 +1,45 @@
-import { NextFunction, Request, Response } from 'express';
+import {
+  Body,
+  Controller,
+  Path,
+  Put,
+  Response,
+  Route,
+  SuccessResponse,
+  Tags,
+} from '@tsoa/runtime';
+import { injectable } from 'tsyringe';
 import { IUpdateReservationRequestDTO } from './updateReservationRequestDTO';
 import UpdateReservationUseCase from './updateReservationUseCase';
 
-class UpdateReservationController {
-  constructor(private updateReservationUseCase: UpdateReservationUseCase) {}
+@injectable()
+@Route('/reservation')
+@Tags('reservations')
+export class UpdateReservationController extends Controller {
+  constructor(private updateReservationUseCase: UpdateReservationUseCase) {
+    super();
+  }
 
-  public async handler(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { reservationId } = req.params;
-      const { date, name, phone, places, value } = req.body;
+  @SuccessResponse(200, 'Ok')
+  @Response(404, 'Not Found')
+  @Put('{reservationId}')
+  public async handler(
+    @Body() request: IUpdateReservationRequestDTO,
+    @Path() reservationId: string
+  ) {
+    const { date, name, phone, places, value } = request;
 
-      const data: IUpdateReservationRequestDTO = {
-        date,
-        name,
-        phone,
-        places,
-        value,
-        reservationId,
-      };
+    const data: IUpdateReservationRequestDTO = {
+      date,
+      name,
+      phone,
+      places,
+      value,
+      reservationId,
+    };
 
-      const reservation = await this.updateReservationUseCase.execute(data);
+    const reservation = await this.updateReservationUseCase.execute(data);
 
-      return res.status(200).send(reservation);
-    } catch (err) {
-      console.error(err);
-      next();
-    }
+    return reservation;
   }
 }
-
-export default UpdateReservationController;

@@ -1,4 +1,5 @@
 import {
+  Controller,
   Get,
   Path,
   Response,
@@ -14,12 +15,14 @@ import GetReservationUseCase from './getReservationUseCase';
 @injectable()
 @Route('/reservation')
 @Tags('reservations')
-export class GetReservationController {
-  constructor(private getReservationUseCase: GetReservationUseCase) {}
+export class GetReservationController extends Controller {
+  constructor(private getReservationUseCase: GetReservationUseCase) {
+    super();
+  }
 
   @SuccessResponse(200, 'Ok')
   @Response(404, 'Not found')
-  @Get()
+  @Get('{reservationId}')
   public async handler(@Path() reservationId: string) {
     const data: IGetReservationRequestDTO = { reservationId };
 

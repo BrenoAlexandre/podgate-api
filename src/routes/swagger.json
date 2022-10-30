@@ -1,0 +1,358 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"ICreateReservationResponseDTO": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"places": {
+						"type": "number",
+						"format": "double"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					},
+					"reservationId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"phone",
+					"date",
+					"places",
+					"value",
+					"reservationId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICreateReservationRequestDTO": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"places": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"phone",
+					"date",
+					"places"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IGetReservationResponseDTO": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"places": {
+						"type": "number",
+						"format": "double"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					},
+					"reservationId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"phone",
+					"date",
+					"places",
+					"value",
+					"reservationId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IReservation": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"places": {
+						"type": "number",
+						"format": "double"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					},
+					"reservationId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"phone",
+					"date",
+					"places",
+					"value",
+					"reservationId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUpdateReservationRequestDTO": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"places": {
+						"type": "number",
+						"format": "double"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					},
+					"reservationId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"phone",
+					"date",
+					"places",
+					"value",
+					"reservationId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "JONSHONS",
+		"version": "1.0.0",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"name": "Soft Trainees 2022"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/reservation": {
+			"post": {
+				"operationId": "Handler",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ICreateReservationResponseDTO"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					}
+				},
+				"tags": [
+					"reservations"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICreateReservationRequestDTO"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "Handler",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IReservation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found"
+					}
+				},
+				"tags": [
+					"reservations"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/reservation/{reservationId}": {
+			"delete": {
+				"operationId": "Handler",
+				"responses": {
+					"204": {
+						"description": "Continue"
+					},
+					"404": {
+						"description": "Not found"
+					}
+				},
+				"tags": [
+					"reservations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "reservationId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"operationId": "Handler",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IGetReservationResponseDTO"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found"
+					}
+				},
+				"tags": [
+					"reservations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "reservationId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Handler",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IReservation"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"reservations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "reservationId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUpdateReservationRequestDTO"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3001/api/v1"
+		}
+	]
+}
