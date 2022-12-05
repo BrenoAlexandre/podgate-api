@@ -8,23 +8,24 @@ import {
   Tags,
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
-import GetUsersUseCase from '../../useCases/users/getUsersUseCase';
+import { GetUsersUseCase } from 'adapters/useCases/users';
+import { IGetUserResponseDTO } from './DTOs';
 
 @injectable()
-@Route('/user')
+@Route('/users')
 @Tags('/users')
 export class GetUsersController extends Controller {
   constructor(private getUsersUseCase: GetUsersUseCase) {
     super();
   }
 
-  @Response(404, 'Not found')
   @SuccessResponse(200, 'Ok')
+  @Response(404, 'Not found')
   @Get()
   @OperationId('getUsers')
   public async handler() {
-    const users = await this.getUsersUseCase.execute();
+    const result: IGetUserResponseDTO[] = await this.getUsersUseCase.execute();
 
-    return users;
+    return result;
   }
 }

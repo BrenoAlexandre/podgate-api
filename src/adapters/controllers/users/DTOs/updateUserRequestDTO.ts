@@ -1,5 +1,6 @@
 export interface IUpdateUserRequestDTO {
-  name: string;
-  email: string;
   _id: string;
+  name: string;
+  lastName: string;
+  email: string;
 }

@@ -1,7 +1,7 @@
 {
   "entryFile": "src/index.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
-  "controllerPathGlobs": ["src/adapters/**/*Controller.ts"],
+  "controllerPathGlobs": ["src/adapters/controllers/**/*.ts"],
   "spec": {
     "name": "TSOA TUTORIAL",
     "outputDirectory": "src/routes",

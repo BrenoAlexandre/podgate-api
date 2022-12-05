@@ -1,25 +1,41 @@
+import { CustomError } from 'config/CustomError';
+import { validateEmail } from 'regex/emailValidation';
+import IUserRepository from 'repositories/IUserRepository';
 import { singleton } from 'tsyringe';
-import UserRepository from '../../../services/implementations/userRepository';
-import { IUpdateUserRequestDTO } from '../../controllers/users/DTOs/updateUserRequestDTO';
+import { IUpdateUserRequestDTO } from '../../controllers/users/DTOs';
 
 @singleton()
-class UpdateUserUseCase {
-  constructor(private userRepository: UserRepository) {}
+export class UpdateUserUseCase {
+  constructor(private userRepository: IUserRepository) {}
+
+  private validate(name: string, lastName: string, email: string) {
+    const errors = [];
+
+    if (!name || !lastName) errors.push('User must have a name and last name.');
+
+    if (!email) errors.push('User must have an email.');
+    if (!validateEmail(email)) errors.push('Invalid email format.');
+
+    if (errors.length > 0) {
+      throw CustomError.badRequest('Invalid user data:', errors);
+    }
+  }
 
   public async execute(data: IUpdateUserRequestDTO) {
-    const { name, email, _id } = data;
+    const { _id, name, lastName, email } = data;
 
-    const updatedUser = await this.userRepository.update(_id, {
+    this.validate(name, lastName, email);
+
+    const updatedUser = await this.userRepository.updateUserById(_id, {
       name,
+      lastName,
       email,
     });
 
     if (!updatedUser) {
-      throw new Error('User not found.');
+      throw CustomError.badRequest('User not found.');
     }
 
     return updatedUser;
   }
 }
-
-export default UpdateUserUseCase;

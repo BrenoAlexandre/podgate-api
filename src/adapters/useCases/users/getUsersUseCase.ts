@@ -1,19 +1,19 @@
 import { singleton } from 'tsyringe';
-import UserRepository from '../../../services/implementations/userRepository';
+import { CustomError } from 'config/CustomError';
+import UserRepository from 'repositories/implementations/UserRepository';
+import { IUserDocument } from 'models/IUserModel';
 
 @singleton()
-class GetUsersUseCase {
+export class GetUsersUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  public async execute() {
-    const users = await this.userRepository.getMany();
+  public async execute(): Promise<IUserDocument[]> {
+    const result = await this.userRepository.findUsers();
 
-    if (!users) {
-      throw new Error('No users found.');
+    if (!result) {
+      throw CustomError.badRequest('Users not found.');
     }
 
-    return users;
+    return result;
   }
 }
-
-export default GetUsersUseCase;

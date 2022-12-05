@@ -5,6 +5,8 @@ import swaggerDocs from './config/swagger';
 import { handleErrorMiddleware } from './middleware/handleErrors';
 import { RegisterRoutes } from './routes/routes';
 
+import './config/mongo';
+
 const app = express();
 
 app.use(express.json());

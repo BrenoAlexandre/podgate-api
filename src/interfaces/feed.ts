@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongoose';
+
 export interface FeedModel {
-  _id: string; //! ObjectId
+  _id: ObjectId;
   url: string;
   privateUrl?: string;
   title: string;
@@ -13,7 +15,7 @@ export interface FeedModel {
 }
 
 export interface EpisodeModel {
-  _id: string; //! ObjectId
+  _id: ObjectId;
   url: string;
   title: string;
   duration: number;

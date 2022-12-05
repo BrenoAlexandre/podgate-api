@@ -1,30 +1,42 @@
 {
   "name": "podgate-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/BrenoAlexandre/podgate-api.git",
   "author": "BrenoAlexandre",
   "license": "MIT",
   "private": false,
   "scripts": {
+    "build": "tsc",
+    "start": "node -r ./tsconfig-paths.js src/index.js",
     "predev": "tsoa spec-and-routes",
-    "dev": "ts-node-dev --respawn src/index.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register --transpile-only --respawn --ignore-watch node_modules src/index.ts",
+    "mongo:up": "docker-compose -f mongo.yml up",
+    "mongo:run": "docker run -dp 27017:27017 mongo"
   },
   "dependencies": {
     "@tsoa/runtime": "^4.1.3",
+    "@types/bcrypt": "^5.0.0",
+    "@types/mongoose": "^5.11.97",
+    "bcrypt": "^5.1.0",
     "concurrently": "^7.5.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "lodash": "^4.17.21",
+    "mongoose": "^6.7.5",
+    "morgan": "^1.10.0",
     "reflect-metadata": "^0.1.13",
     "swagger": "^0.7.5",
     "swagger-ui-express": "^4.5.0",
     "tsoa": "^4.1.3",
-    "tsyringe": "^4.7.0"
+    "tsyringe": "^4.7.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.14",
     "@types/lodash": "^4.14.189",
     "@types/node": "^16.11.7",
@@ -32,6 +44,7 @@
     "@types/swagger-ui-express": "^4.1.3",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.1.1",
     "typescript": "^4.8.4"
   }
 }

@@ -3,3 +3,6 @@ package-lock.json
 yarn-error.log
 yarn.lock
 src/routes
+logs
+dist
+.env

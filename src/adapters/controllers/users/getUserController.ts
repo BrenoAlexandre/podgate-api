@@ -9,9 +9,8 @@ import {
   Tags,
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
-import { IGetUserRequestDTO } from './DTOs/getUserRequestDTO';
-import { IGetUserResponseDTO } from './DTOs/getUserResponseDTO';
-import GetUserUseCase from '../../useCases/users/getUserUseCase';
+import { IGetUserRequestDTO, IGetUserResponseDTO } from './DTOs';
+import { GetUserUseCase } from '../../useCases/users';
 
 @injectable()
 @Route('/user')
@@ -27,6 +26,8 @@ export class GetUserController extends Controller {
   @OperationId('getUser')
   public async handler(@Path() userId: string) {
     const data: IGetUserRequestDTO = { userId };
+
+    console.log(data);
 
     const result: IGetUserResponseDTO = await this.getUserUseCase.execute(data);
 

@@ -1,20 +1,19 @@
+import { CustomError } from 'config/CustomError';
+import IUserRepository from 'repositories/IUserRepository';
 import { singleton } from 'tsyringe';
-import UserRepository from '../../../services/implementations/userRepository';
-import { IDeleteUserRequestDTO } from '../../controllers/users/DTOs/deleteUserRequestDTO';
+import { IDeleteUserRequestDTO } from '../../controllers/users/DTOs';
 
 @singleton()
-class DeleteUserUseCase {
-  constructor(private userRepository: UserRepository) {}
+export class DeleteUserUseCase {
+  constructor(private userRepository: IUserRepository) {}
 
   public async execute(data: IDeleteUserRequestDTO): Promise<void> {
     const { userId } = data;
 
-    const result = await this.userRepository.delete(userId);
+    const result = await this.userRepository.deleteUserById(userId);
 
     if (!result) {
-      throw new Error('User not found.');
+      throw CustomError.badRequest('User not found.');
     }
   }
 }
-
-export default DeleteUserUseCase;

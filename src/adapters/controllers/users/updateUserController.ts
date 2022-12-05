@@ -10,8 +10,8 @@ import {
   Tags,
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
-import { IUpdateUserRequestDTO } from './DTOs/updateUserRequestDTO';
-import UpdateUserUseCase from '../../useCases/users/updateUserUseCase';
+import { IUpdateUserRequestDTO } from './DTOs';
+import { UpdateUserUseCase } from '../../useCases/users/';
 
 @injectable()
 @Route('/user')
@@ -29,12 +29,13 @@ export class UpdateUserController extends Controller {
     @Body() request: IUpdateUserRequestDTO,
     @Path() userId: string
   ) {
-    const { name, email } = request;
+    const { name, lastName, email } = request;
 
     const data: IUpdateUserRequestDTO = {
-      name,
-      email,
       _id: userId,
+      name,
+      lastName,
+      email,
     };
 
     const user = await this.updateUserUseCase.execute(data);

@@ -9,7 +9,7 @@ import {
   Tags,
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
-import DeleteUserUseCase from '../../useCases/users/deleteUserUseCase';
+import { DeleteUserUseCase } from '../../useCases/users';
 import { IDeleteUserRequestDTO } from './DTOs/deleteUserRequestDTO';
 
 @injectable()
