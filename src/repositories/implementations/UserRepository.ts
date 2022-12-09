@@ -19,10 +19,15 @@ export default class UserRepository implements IUserRepository {
     });
   }
 
-  async loginUser({ email, password }: ILoginInput): Promise<boolean> {
+  async loginUser({
+    email,
+    password,
+  }: ILoginInput): Promise<IUserDocument | null> {
     const user = await UserModel.findOne({ email }, { lean: false });
-    if (!user) return false;
-    return user.comparePassword(password);
+    if (!user) return null;
+    const isValid = user.comparePassword(password);
+    if (!isValid) return null;
+    return user;
   }
 
   async deleteUserById(id: string): Promise<boolean> {
