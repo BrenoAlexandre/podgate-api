@@ -27,7 +27,7 @@ export class CreateUserController extends Controller {
   public async handler(@Body() request: ICreateUserRequestDTO) {
     const { name, lastName, email, password, passwordConfirmation } = request;
 
-    const data: ICreateUserRequestDTO = {
+    const data = {
       name,
       lastName,
       email,

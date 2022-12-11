@@ -4,6 +4,7 @@ import { CustomError } from 'config/CustomError';
 import { validateEmail } from 'regex/emailValidation';
 import UserRepository from 'repositories/implementations/UserRepository';
 import { ILoginInput, IUserDocument } from 'models/IUserModel';
+import { signJwt } from 'services/jwt';
 
 @singleton()
 export class LoginUserUseCase {
@@ -21,7 +22,7 @@ export class LoginUserUseCase {
     }
   }
 
-  public async execute(data: ILoginUserRequestDTO): Promise<IUserDocument> {
+  public async execute(data: ILoginUserRequestDTO): Promise<string> {
     const { email, password } = data;
 
     this.validate(email, password);
@@ -37,7 +38,8 @@ export class LoginUserUseCase {
       throw CustomError.authorization('Invalid login.');
     }
 
-    //TODO Come up with a data object to be the token
-    return result;
+    const authorization = signJwt(result.toObject(), { expiresIn: 15000 });
+
+    return authorization;
   }
 }

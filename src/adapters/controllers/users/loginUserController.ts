@@ -20,7 +20,7 @@ export class LoginUserController extends Controller {
     super();
   }
 
-  @SuccessResponse(201, 'Created')
+  @SuccessResponse(204, 'Continue')
   @Response(422, 'Unprocessable Entity')
   @Post()
   @OperationId('loginUser')
@@ -32,8 +32,8 @@ export class LoginUserController extends Controller {
       password,
     };
 
-    await this.loginUserUseCase.execute(data);
+    const authorization = await this.loginUserUseCase.execute(data);
 
-    //TODO Send the Token and add authentication to controllers
+    this.setHeader('authorization', authorization);
   }
 }

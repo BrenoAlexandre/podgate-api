@@ -6,18 +6,19 @@ import {
 import { CustomError } from 'config/CustomError';
 import { validateEmail } from 'regex/emailValidation';
 import UserRepository from 'repositories/implementations/UserRepository';
+import { ICreateUserInput } from 'interfaces/UserUsecases';
 
 @singleton()
 export class CreateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  private validate(
-    name: string,
-    lastName: string,
-    email: string,
-    password: string,
-    passwordConfirmation: string
-  ) {
+  private validate({
+    name,
+    lastName,
+    email,
+    password,
+    passwordConfirmation,
+  }: ICreateUserInput) {
     const errors = [];
 
     if (!name || !lastName) errors.push('User must have a name and last name.');
@@ -37,11 +38,11 @@ export class CreateUserUseCase {
   }
 
   public async execute(
-    data: ICreateUserRequestDTO
+    data: ICreateUserInput
   ): Promise<ICreateUserResponseDTO> {
-    const { name, lastName, email, password, passwordConfirmation } = data;
+    const { name, lastName, email, password } = data;
 
-    this.validate(name, lastName, email, password, passwordConfirmation);
+    this.validate(data);
 
     const userInput = {
       name,

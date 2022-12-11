@@ -3,21 +3,29 @@
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/adapters/controllers/**/*.ts"],
   "spec": {
-    "name": "TSOA TUTORIAL",
+    "name": "Podgate",
     "outputDirectory": "src/routes",
     "specVersion": 3,
     "schemes": ["http", "https"],
     "host": "localhost:3001",
-    "basePath": "/api/v1"
+    "basePath": "/api/v1",
+    "securityDefinitions": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
   },
   "swagger": {
     "outputDirectory": "./routes"
   },
   "routes": {
-    "iocModule": "src/config/iocConfig.ts",
     "basePath": "/api/v1",
     "entryFile": "src/index.ts",
-    "routesDir": "src/routes"
+    "routesDir": "src/routes",
+    "iocModule": "src/config/iocConfig.ts",
+    "authenticationModule": "src/middlewares/expressAuthentication.ts"
   },
   "ignore": ["**/node_modules/**"]
 }

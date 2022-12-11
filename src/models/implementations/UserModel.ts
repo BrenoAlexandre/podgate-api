@@ -30,6 +30,12 @@ const UserSchema = new Schema<IUserDocument>(
   },
   {
     timestamps: true,
+    toObject: {
+      transform: (doc, ret, options) => {
+        ret._id = ret._id.toString();
+        return ret;
+      },
+    },
   }
 );
 

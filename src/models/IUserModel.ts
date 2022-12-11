@@ -1,10 +1,10 @@
 import { Document, ObjectId } from 'mongoose';
 
 export interface IUserInput {
-  name: string;
-  lastName: string;
-  email: string;
-  password: string;
+  name?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
 }
 
 export interface IUserUpdateInput {

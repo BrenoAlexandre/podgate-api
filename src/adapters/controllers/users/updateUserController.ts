@@ -4,14 +4,18 @@ import {
   OperationId,
   Path,
   Put,
+  Request,
   Response,
   Route,
+  Security,
   SuccessResponse,
   Tags,
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
 import { IUpdateUserRequestDTO } from './DTOs';
 import { UpdateUserUseCase } from '../../useCases/users/';
+import { IAuthRequest } from 'interfaces/IAuthRequest';
+import { IUpdateUserInput } from 'interfaces/UserUsecases';
 
 @injectable()
 @Route('/user')
@@ -23,23 +27,28 @@ export class UpdateUserController extends Controller {
 
   @SuccessResponse(200, 'Ok')
   @Response(404, 'Not Found')
-  @Put('{userId}')
+  @Security('bearer')
+  @Put()
   @OperationId('updateUser')
   public async handler(
     @Body() request: IUpdateUserRequestDTO,
-    @Path() userId: string
+    @Request() req: IAuthRequest
   ) {
     const { name, lastName, email } = request;
+    const { user } = req;
 
-    const data: IUpdateUserRequestDTO = {
-      _id: userId,
+    console.log('validate');
+    console.log('Req user:', user);
+
+    const data: IUpdateUserInput = {
+      _id: user._id.toString(),
       name,
       lastName,
       email,
     };
 
-    const user = await this.updateUserUseCase.execute(data);
+    //! Está esvaziando campos quando enviado vazio
 
-    return user;
+    await this.updateUserUseCase.execute(data);
   }
 }

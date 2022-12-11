@@ -1,3 +1,4 @@
+import Logger from 'config/logger';
 import { NextFunction, Request, Response } from 'express';
 import { CustomError } from '../config/CustomError';
 
@@ -13,6 +14,7 @@ export const handleErrorMiddleware = (
       error: err.customObject || undefined,
     };
 
+    Logger.error(`${err.stack}`);
     return res.status(err.code || 400).send(result);
   }
 
