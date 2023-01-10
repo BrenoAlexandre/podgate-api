@@ -2,7 +2,7 @@ import { singleton } from 'tsyringe';
 import { CustomError } from 'config/CustomError';
 import { validateEmail } from 'regex/emailValidation';
 import UserRepository from 'repositories/implementations/UserRepository';
-import { IUpdateUserInput } from '../../../interfaces/UserUsecases';
+import { IUpdateUserInput } from '../../../interfaces/UserUseCases';
 
 @singleton()
 export class UpdateUserUseCase {

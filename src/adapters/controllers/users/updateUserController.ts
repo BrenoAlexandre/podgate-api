@@ -15,7 +15,7 @@ import { injectable } from 'tsyringe';
 import { IUpdateUserRequestDTO } from './DTOs';
 import { UpdateUserUseCase } from '../../useCases/users/';
 import { IAuthRequest } from 'interfaces/IAuthRequest';
-import { IUpdateUserInput } from 'interfaces/UserUsecases';
+import { IUpdateUserInput } from 'interfaces/UserUseCases';
 
 @injectable()
 @Route('/user')

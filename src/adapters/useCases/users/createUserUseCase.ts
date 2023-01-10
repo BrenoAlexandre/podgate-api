@@ -6,7 +6,7 @@ import {
 import { CustomError } from 'config/CustomError';
 import { validateEmail } from 'regex/emailValidation';
 import UserRepository from 'repositories/implementations/UserRepository';
-import { ICreateUserInput } from 'interfaces/UserUsecases';
+import { ICreateUserInput } from 'interfaces/UserUseCases';
 
 @singleton()
 export class CreateUserUseCase {

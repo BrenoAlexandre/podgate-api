@@ -2,16 +2,19 @@ import { singleton } from 'tsyringe';
 import { parseString } from 'xml2js';
 import { CustomError } from 'config/CustomError';
 import FeedRepository from 'repositories/implementations/FeedRepository';
-import { ICreateFeedInput } from 'interfaces/FeedUseCases';
 import { IFeedDocument } from 'models/IFeedModel';
 import axios from 'axios';
 import { validateUrl } from 'regex/urlValidation';
 
+interface validateProps {
+  url: string;
+  alreadyExists: IFeedDocument | null;
+}
 @singleton()
 export class CreateFeedUseCase {
   constructor(private feedRepository: FeedRepository) {}
 
-  private async validate({ url }: ICreateFeedInput) {
+  private async validate({ url, alreadyExists }: validateProps) {
     const errors: string[] = [];
 
     if (!url) {
@@ -23,8 +26,12 @@ export class CreateFeedUseCase {
       }
     }
 
+    if (alreadyExists) {
+      errors.push('This URL has already been submitted');
+    }
+
     if (errors.length > 0) {
-      throw CustomError.badRequest('Invalid feed url:', errors);
+      throw CustomError.badRequest('Invalid feed url', errors);
     }
   }
 
@@ -47,7 +54,9 @@ export class CreateFeedUseCase {
   public async execute(data: { url: string }): Promise<IFeedDocument> {
     const { url } = data;
 
-    await this.validate(data);
+    const alreadyExists = await this.feedRepository.findFeedByUrl(url);
+
+    await this.validate({ ...data, alreadyExists });
 
     const feedData: any = await this.fetchFeedData(url);
 
@@ -60,7 +69,7 @@ export class CreateFeedUseCase {
       title: feedData.channel[0].title[0],
       description: feedData.channel[0].description[0],
       photoUrl: feedData.channel[0].image[0].url[0],
-      genre: feedData.channel[0]['itunes:category'][0].$.text,
+      category: feedData.channel[0]['itunes:category'][0].$.text,
       episodes,
     };
 

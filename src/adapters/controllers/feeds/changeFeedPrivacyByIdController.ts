@@ -29,11 +29,11 @@ export class ChangeFeedPrivacyByIdController extends Controller {
   @OperationId('changeFeedPrivacyById')
   public async handler(
     @Path() feedId: string,
-    @Body() request: { privacy: boolean }
+    @Body() request: { isPrivate: boolean }
   ) {
-    const { privacy } = request;
+    const { isPrivate } = request;
 
-    const data = { feedId, privacy };
+    const data = { feedId, isPrivate };
 
     const result: IFeedDocument =
       await this.changeFeedPrivacyByIdUseCase.execute(data);

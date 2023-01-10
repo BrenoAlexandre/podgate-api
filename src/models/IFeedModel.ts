@@ -5,7 +5,7 @@ export interface IFeedInput {
   title: string;
   description: string;
   photoUrl: string;
-  genre: string;
+  category: string;
   episodes: string[];
 }
 

@@ -1,10 +1,13 @@
+import { getCategoriesResponseDTO } from 'adapters/controllers/feeds/DTOs';
 import { IFeedDocument, IFeedInput } from 'models/IFeedModel';
 import FeedModel from 'models/implementations/FeedModel';
 import IFeedRepository from 'repositories/IFeedRepository';
 
 export default class FeedRepository implements IFeedRepository {
   async save(feed: IFeedInput): Promise<IFeedDocument | null> {
-    return await FeedModel.create<IFeedInput>(feed);
+    const newFeed = await FeedModel.create<IFeedInput>(feed);
+
+    return newFeed ?? null;
   }
 
   async findFeedByUrl(url: string): Promise<IFeedDocument | null> {
@@ -17,26 +20,18 @@ export default class FeedRepository implements IFeedRepository {
     return feed ?? null;
   }
 
-  async fetchFeedsGenres(): Promise<
-    { genre: string; feeds: IFeedDocument[] }[] | null
-  > {
-    //? para cada categoria, quero buscar os seus podcasts, ordenando pela categoria mais populada
-    const genres = await FeedModel.aggregate([{ $group: { _id: '$genre' } }]);
-    console.log('Categorias:', genres); //TODO Testa essa porra aqui
-    return genres;
+  async fetchCategories(): Promise<getCategoriesResponseDTO[] | null> {
+    const categories = await FeedModel.aggregate([
+      { $group: { _id: '$category', feeds: { $push: '$$ROOT' } } },
+    ]);
+
+    return categories;
   }
 
-  async fetchFeedsByGenre(genre: string): Promise<IFeedDocument[] | null> {
-    const feeds = await FeedModel.aggregate([
-      {
-        $match: {
-          genre,
-        },
-        $sort: {
-          title: 1,
-        },
-      },
-    ]);
+  async fetchFeedsByCategory(
+    category: string
+  ): Promise<IFeedDocument[] | null> {
+    const feeds = await FeedModel.find({ category });
 
     return feeds ?? null;
   }

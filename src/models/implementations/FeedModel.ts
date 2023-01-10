@@ -6,6 +6,7 @@ const FeedSchema = new Schema<IFeedDocument>(
     url: {
       type: String,
       required: true,
+      unique: true,
     },
     title: {
       type: String,
@@ -19,7 +20,7 @@ const FeedSchema = new Schema<IFeedDocument>(
       type: String,
       required: true,
     },
-    genre: {
+    category: {
       type: String,
       required: true,
     },
@@ -44,14 +45,6 @@ const FeedSchema = new Schema<IFeedDocument>(
     },
   }
 );
-
-FeedSchema.methods.findByGenre = async function (
-  genre: string
-): Promise<IFeedDocument[]> {
-  const genreFeeds = await FeedModel.find().where(genre);
-
-  return genreFeeds;
-};
 
 const FeedModel = model<IFeedDocument>('Feed', FeedSchema);
 

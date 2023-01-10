@@ -1,1 +1,2 @@
-export * from './CreateFeedRequestDTO';
+export * from './createFeedRequestDTO';
+export * from './getCategoriesDTO';

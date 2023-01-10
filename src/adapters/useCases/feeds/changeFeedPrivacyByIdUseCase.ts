@@ -7,11 +7,16 @@ import { IFeedDocument } from 'models/IFeedModel';
 export class ChangeFeedPrivacyByIdUseCase {
   constructor(private feedRepository: FeedRepository) {}
 
-  public async execute(data: { feedId: string }): Promise<IFeedDocument> {
-    const { feedId } = data;
+  public async execute(data: {
+    feedId: string;
+    isPrivate: boolean;
+  }): Promise<IFeedDocument> {
+    const { feedId, isPrivate } = data;
 
-    //! change privacy
-    const result = await this.feedRepository.findFeedById(feedId);
+    const result = await this.feedRepository.changeFeedPrivacy(
+      feedId,
+      isPrivate
+    );
 
     if (!result) {
       throw CustomError.badRequest('Unable to find feed.');
