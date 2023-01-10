@@ -13,4 +13,6 @@ export interface IFeedDocument extends IFeedInput, Document {
   _id: ObjectId;
   isPrivate: boolean;
   casterId: ObjectId;
+  created_At?: Date;
+  updated_At?: Date;
 }

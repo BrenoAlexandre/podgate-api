@@ -30,5 +30,6 @@ export interface IUserDocument extends IUserInput, Document {
   supportsId: ObjectId | null;
   created_At?: Date;
   updated_At?: Date;
+  setPassword(newPassword: string): Promise<boolean>;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }

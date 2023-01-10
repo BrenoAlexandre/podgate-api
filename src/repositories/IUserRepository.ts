@@ -12,4 +12,5 @@ export default interface IUserRepository {
   loginUser({ email, password }: ILoginInput): Promise<IUserDocument | null>;
   deleteUserById(id: string): Promise<boolean>;
   updateUserById(id: string, data: IUserUpdateInput): Promise<boolean>;
+  changePassword(email: string, newPassword: string): Promise<boolean>;
 }

@@ -61,6 +61,18 @@ UserSchema.pre(
   }
 );
 
+UserSchema.methods.setPassword = async function (
+  newPassword: string
+): Promise<boolean> {
+  const user = this as IUserDocument;
+
+  user.password = newPassword;
+
+  await user.save();
+
+  return true;
+};
+
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {

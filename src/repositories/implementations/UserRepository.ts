@@ -15,7 +15,7 @@ export default class UserRepository implements IUserRepository {
 
   async findUsers(): Promise<IUserDocument[] | null> {
     return await UserModel.find().catch((e) => {
-      return null;
+      return null; //TODO Implementar?
     });
   }
 
@@ -38,5 +38,12 @@ export default class UserRepository implements IUserRepository {
   async updateUserById(id: string, data: IUserInput): Promise<boolean> {
     const updatedUser = await UserModel.updateOne({ _id: id }, data);
     return updatedUser.acknowledged;
+  }
+
+  async changePassword(email: string, newPassword: string): Promise<boolean> {
+    const user = await UserModel.findOne({ email }, { lean: false });
+    if (!user) return false;
+    const success = await user.setPassword(newPassword);
+    return success;
   }
 }
