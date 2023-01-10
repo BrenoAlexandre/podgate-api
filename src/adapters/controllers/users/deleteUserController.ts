@@ -5,6 +5,7 @@ import {
   Path,
   Response,
   Route,
+  Security,
   SuccessResponse,
   Tags,
 } from '@tsoa/runtime';
@@ -22,6 +23,7 @@ export class DeleteUserController extends Controller {
 
   @SuccessResponse(204, 'Continue')
   @Response(404, 'Not found')
+  @Security('bearer')
   @Delete('{userId}')
   @OperationId('deleteUser')
   public async handler(@Path() userId: string) {

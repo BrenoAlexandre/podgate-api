@@ -46,12 +46,13 @@ UserSchema.pre(
     next: mongoose.CallbackWithoutResultAndOptionalError
   ) {
     // only hash the password if it has been modified (or is new)
+    if (!this.password) return next();
     if (!this.isModified('password')) return next();
 
     // Random additional data
     const salt = await bcrypt.genSalt(10);
 
-    const hash = await bcrypt.hashSync(this.password, salt);
+    const hash = bcrypt.hashSync(this.password, salt);
 
     // Replace the password with the hash
     this.password = hash;
@@ -65,6 +66,9 @@ UserSchema.methods.comparePassword = async function (
 ): Promise<boolean> {
   // So we don't have to pass this into the interface method
   const user = this as IUserDocument;
+
+  // only compare the password if it exists
+  if (!user.password) return false;
 
   return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
 };

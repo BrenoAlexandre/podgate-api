@@ -19,8 +19,8 @@ export interface IUserChangePassword {
 }
 
 export interface ILoginInput {
-  email: IUserDocument['email'];
-  password: IUserDocument['password'];
+  email: string;
+  password: string;
 }
 export interface IUserDocument extends IUserInput, Document {
   _id: ObjectId;
