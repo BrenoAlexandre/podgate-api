@@ -29,7 +29,7 @@ const FavoriteSchema = new Schema<IFavoriteDocument>(
 
 FavoriteSchema.methods.addFeed = async function (
   feedId: string
-): Promise<boolean> {
+): Promise<IFavoriteDocument> {
   const favList = this as IFavoriteDocument;
 
   const feeds = favList.feedsId;
@@ -40,12 +40,12 @@ FavoriteSchema.methods.addFeed = async function (
 
   await favList.save();
 
-  return true;
+  return favList;
 };
 
 FavoriteSchema.methods.removeFeed = async function (
   feedId: string
-): Promise<boolean> {
+): Promise<IFavoriteDocument> {
   const favList = this as IFavoriteDocument;
 
   const feeds = favList.feedsId;
@@ -56,7 +56,7 @@ FavoriteSchema.methods.removeFeed = async function (
 
   await favList.save();
 
-  return true;
+  return favList;
 };
 
 const FavoriteModel = model<IFavoriteDocument>('UserFavorites', FavoriteSchema);

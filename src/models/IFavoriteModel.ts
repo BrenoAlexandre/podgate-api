@@ -6,4 +6,6 @@ export interface IFavoriteDocument extends Document {
   feedsId: string[];
   created_At?: Date;
   updated_At?: Date;
+  addFeed(feedId: string): Promise<IFavoriteDocument>;
+  removeFeed(feedId: string): Promise<IFavoriteDocument>;
 }
