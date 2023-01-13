@@ -12,7 +12,7 @@ import {
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
 import { RemoveFromFavoritesUseCase } from 'adapters/useCases/favorites';
-import { IFavoriteDocument } from 'models/IFavoriteModel';
+import { IFavoriteDocument } from '../../../models/IFavoriteModel';
 import { IAuthRequest } from 'interfaces/IAuthRequest';
 
 @injectable()

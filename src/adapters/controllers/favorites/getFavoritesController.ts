@@ -11,7 +11,7 @@ import {
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
 import { GetFavoritesUseCase } from 'adapters/useCases/favorites';
-import { IFavoriteDocument } from 'models/IFavoriteModel';
+import { IFavoriteDocument } from '../../../models/IFavoriteModel';
 import { IAuthRequest } from 'interfaces/IAuthRequest';
 
 @injectable()
