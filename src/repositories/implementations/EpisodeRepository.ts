@@ -18,4 +18,15 @@ export default class EpisodeRepository implements IEpisodesRepository {
     const episodesList = await EpisodeModel.findById(episodesId);
     episodesList?.changeFeedId(feedId);
   }
+
+  async updateEpisodes(
+    feedId: string,
+    episodes: IEpisodeInput[]
+  ): Promise<void> {
+    const episodesList = await EpisodeModel.findOne({ feedId });
+
+    if (!episodesList) return;
+
+    episodesList.episodes = episodes;
+  }
 }
