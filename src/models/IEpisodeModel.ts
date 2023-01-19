@@ -14,4 +14,7 @@ export interface IEpisodeDocument extends Document {
   episodes: IEpisodeInput[];
   created_At?: Date;
   updated_At?: Date;
+  addEpisode(episode: IEpisodeInput): Promise<IEpisodeDocument>;
+  addEpisodes(episodes: IEpisodeInput[]): Promise<IEpisodeDocument>;
+  changeFeedId(feedId: string): Promise<IEpisodeDocument>;
 }

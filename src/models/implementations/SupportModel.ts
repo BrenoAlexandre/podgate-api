@@ -14,7 +14,7 @@ const SupportSchema = new Schema<ISupportDocument>(
     feeds: [
       {
         feedId: {
-          type: [String],
+          type: String,
           ref: 'Feed',
           required: true,
         },

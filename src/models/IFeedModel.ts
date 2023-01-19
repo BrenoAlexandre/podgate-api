@@ -6,13 +6,16 @@ export interface IFeedInput {
   description: string;
   photoUrl: string;
   category: string;
-  episodes: string[];
+  episodesId: string;
 }
 
 export interface IFeedDocument extends IFeedInput, Document {
   _id: ObjectId;
   isPrivate: boolean;
+  privateFeed?: string;
   casterId: ObjectId;
   created_At?: Date;
   updated_At?: Date;
+  updatePrivacy(isPrivate: boolean): Promise<IFeedDocument>;
+  setPrivateFeed(feedId?: string): Promise<void>;
 }

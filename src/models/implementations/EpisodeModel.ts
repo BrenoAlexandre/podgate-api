@@ -52,8 +52,8 @@ EpisodeSchema.methods.addEpisode = async function (
   const newList = [...episodes, episode];
 
   episodeList.episodes = newList;
-
   await episodeList.save();
+
   return episodeList;
 };
 
@@ -66,8 +66,19 @@ EpisodeSchema.methods.addEpisodes = async function (
   const newList = [...oldEpisodes, ...episodes];
 
   episodeList.episodes = newList;
-
   await episodeList.save();
+
+  return episodeList;
+};
+
+EpisodeSchema.methods.changeFeedId = async function (
+  feedId: string
+): Promise<IEpisodeDocument> {
+  const episodeList = this as IEpisodeDocument;
+
+  episodeList.feedId = feedId;
+  episodeList.save();
+
   return episodeList;
 };
 

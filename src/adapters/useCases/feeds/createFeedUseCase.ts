@@ -5,6 +5,8 @@ import FeedRepository from 'repositories/implementations/FeedRepository';
 import { IFeedDocument } from 'models/IFeedModel';
 import axios from 'axios';
 import { validateUrl } from 'regex/urlValidation';
+import { IEpisodeInput } from 'models/IEpisodeModel';
+import EpisodeRepository from 'repositories/implementations/EpisodeRepository';
 
 interface validateProps {
   url: string;
@@ -12,7 +14,10 @@ interface validateProps {
 }
 @singleton()
 export class CreateFeedUseCase {
-  constructor(private feedRepository: FeedRepository) {}
+  constructor(
+    private feedRepository: FeedRepository,
+    private episodeRepository: EpisodeRepository
+  ) {}
 
   private async validate({ url, alreadyExists }: validateProps) {
     const errors: string[] = [];
@@ -60,9 +65,22 @@ export class CreateFeedUseCase {
 
     const feedData: any = await this.fetchFeedData(url);
 
-    const episodes = feedData.channel[0].item.map(
-      (episode: any) => episode.title[0]
+    const episodeData: IEpisodeInput[] = feedData.channel[0].item.map(
+      (episode: any) => {
+        return {
+          photoUrl: episode['itunes:image'][0],
+          title: episode.title[0],
+          description: episode.description[0],
+          length: episode['itunes:duration'][0],
+          pubDate: episode.pubDate[0],
+        };
+      }
     );
+
+    const episodesId = await this.episodeRepository.saveEpisodes(episodeData);
+
+    if (!episodesId)
+      throw CustomError.badRequest('Unable to create episodes list.');
 
     const feedInput = {
       url,
@@ -70,7 +88,7 @@ export class CreateFeedUseCase {
       description: feedData.channel[0].description[0],
       photoUrl: feedData.channel[0].image[0].url[0],
       category: feedData.channel[0]['itunes:category'][0].$.text,
-      episodes,
+      episodesId,
     };
 
     const result = await this.feedRepository.save(feedInput);
@@ -78,6 +96,11 @@ export class CreateFeedUseCase {
     if (!result) {
       throw CustomError.badRequest('Unable to create feed.');
     }
+
+    await this.episodeRepository.updateFeedId(
+      episodesId,
+      result._id.toString()
+    );
 
     return result;
   }

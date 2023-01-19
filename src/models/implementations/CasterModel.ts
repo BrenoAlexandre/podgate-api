@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { ICasterDocument } from 'models/ICasterModel';
 import { EStatus } from 'enums';
+import { add } from 'date-fns';
 
 const CasterSchema = new Schema<ICasterDocument>(
   {
@@ -13,7 +14,7 @@ const CasterSchema = new Schema<ICasterDocument>(
     feeds: [
       {
         feedId: {
-          type: [String],
+          type: String,
           ref: 'Feed',
           required: true,
         },
@@ -42,6 +43,21 @@ const CasterSchema = new Schema<ICasterDocument>(
     },
   }
 );
+
+CasterSchema.methods.updateStatus = async function (
+  feedId: string,
+  newStatus: EStatus
+): Promise<ICasterDocument> {
+  const casterProfile = this as ICasterDocument;
+
+  casterProfile.feeds.map((feed) => {
+    if (feed.feedId === feedId) feed.status = newStatus;
+  });
+
+  await casterProfile.save();
+
+  return casterProfile;
+};
 
 const CasterModel = model<ICasterDocument>('UserCasters', CasterSchema);
 

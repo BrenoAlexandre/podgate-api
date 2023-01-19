@@ -24,14 +24,18 @@ const FeedSchema = new Schema<IFeedDocument>(
       type: String,
       required: true,
     },
-    episodes: {
-      type: [String],
-      required: false,
+    episodesId: {
+      type: String,
+      required: true,
     },
     isPrivate: {
       type: Boolean,
       required: true,
       default: false,
+    },
+    privateFeed: {
+      type: String,
+      unique: true,
     },
     casterId: { type: Schema.Types.ObjectId, ref: 'feedCaster' },
   },
@@ -45,6 +49,29 @@ const FeedSchema = new Schema<IFeedDocument>(
     },
   }
 );
+
+FeedSchema.methods.updatePrivacy = async function (
+  isPrivate: boolean
+): Promise<IFeedDocument> {
+  const feed = this as IFeedDocument;
+
+  feed.isPrivate = isPrivate;
+
+  feed.save();
+
+  return feed;
+};
+
+FeedSchema.methods.setPrivateFeed = async function (
+  feedId?: string
+): Promise<void> {
+  const feed = this as IFeedDocument;
+
+  if (feedId) feed.privateFeed = feedId;
+  else feed.privateFeed = undefined;
+
+  feed.save();
+};
 
 const FeedModel = model<IFeedDocument>('Feed', FeedSchema);
 

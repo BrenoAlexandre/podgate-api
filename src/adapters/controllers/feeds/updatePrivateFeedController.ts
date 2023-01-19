@@ -8,7 +8,6 @@ import {
   Tags,
   Put,
   Path,
-  Security,
   Request,
 } from '@tsoa/runtime';
 import { IFeedDocument } from '../../../models/IFeedModel';
@@ -17,7 +16,7 @@ import { ChangeFeedPrivacyByIdUseCase } from 'adapters/useCases/feeds';
 import { IAuthRequest } from 'interfaces/IAuthRequest';
 
 @injectable()
-@Route('/feed')
+@Route('/feed/private')
 @Tags('/feeds')
 export class ChangeFeedPrivacyByIdController extends Controller {
   constructor(
@@ -28,18 +27,12 @@ export class ChangeFeedPrivacyByIdController extends Controller {
 
   @SuccessResponse(200, 'Ok')
   @Response(422, 'Unprocessable Entity')
-  @Security('bearer')
   @Put('feedPrivacy/{feedId}')
   @OperationId('changeFeedPrivacyById')
-  public async handler(
-    @Path() feedId: string,
-    @Body() request: { isPrivate: boolean },
-    @Request() req: IAuthRequest
-  ) {
+  public async handler(@Path() feedId: string, @Request() req: IAuthRequest) {
     const { user } = req;
-    const { isPrivate } = request;
 
-    const data = { feedId, isPrivate, userId: user._id };
+    const data = { feedId, userId: user._id };
 
     const result: IFeedDocument =
       await this.changeFeedPrivacyByIdUseCase.execute(data);
