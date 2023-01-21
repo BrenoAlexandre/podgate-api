@@ -37,7 +37,7 @@ export const expressAuthentication = async (
               })
             );
           } else {
-            resolve(decoded._doc);
+            resolve(decoded);
           }
         }
       );

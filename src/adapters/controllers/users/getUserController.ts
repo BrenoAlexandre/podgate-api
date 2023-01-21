@@ -27,8 +27,6 @@ export class GetUserController extends Controller {
   public async handler(@Path() userId: string) {
     const data: IGetUserRequestDTO = { userId };
 
-    console.log(data);
-
     const result: IGetUserResponseDTO = await this.getUserUseCase.execute(data);
 
     return result;

@@ -1,20 +1,23 @@
 import { model, Schema } from 'mongoose';
 import { ISubscriptionDocument } from 'models/ISubscriptionModel';
+import { ObjectId } from 'mongodb';
 
 const SubscriptionSchema = new Schema<ISubscriptionDocument>(
   {
     userId: {
-      type: String,
+      type: ObjectId,
       ref: 'User',
       required: true,
       unique: true,
     },
-    feedsId: {
-      type: [String],
-      ref: 'Feed',
-      required: true,
-      unique: true,
-    },
+    feedsId: [
+      {
+        type: ObjectId,
+        ref: 'Feed',
+        required: true,
+        unique: true,
+      },
+    ],
   },
   {
     timestamps: true,
@@ -34,7 +37,7 @@ SubscriptionSchema.methods.addFeed = async function (
 
   const feeds = subList.feedsId;
 
-  const newList = [...feeds, feedId];
+  const newList = [...feeds, new ObjectId(feedId)];
 
   subList.feedsId = newList;
 
@@ -50,7 +53,7 @@ SubscriptionSchema.methods.removeFeed = async function (
 
   const feeds = subList.feedsId;
 
-  const newList = feeds.filter((feed) => feed !== feedId);
+  const newList = feeds.filter((feed) => feed.toString() !== feedId);
 
   subList.feedsId = newList;
 

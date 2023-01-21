@@ -3,6 +3,7 @@ import {
   IUserDocument,
   IUserInput,
   IUserUpdateInput,
+  IUserUpdateKeys,
 } from 'models/IUserModel';
 
 export default interface IUserRepository {

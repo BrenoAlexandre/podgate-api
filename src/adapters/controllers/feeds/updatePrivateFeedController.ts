@@ -7,8 +7,8 @@ import {
   SuccessResponse,
   Tags,
   Put,
-  Path,
   Request,
+  Security,
 } from '@tsoa/runtime';
 import { IFeedDocument } from '../../../models/IFeedModel';
 import { injectable } from 'tsyringe';
@@ -27,12 +27,17 @@ export class ChangeFeedPrivacyByIdController extends Controller {
 
   @SuccessResponse(200, 'Ok')
   @Response(422, 'Unprocessable Entity')
-  @Put('feedPrivacy/{feedId}')
+  @Put('feedPrivacy')
+  @Security('bearer')
   @OperationId('changeFeedPrivacyById')
-  public async handler(@Path() feedId: string, @Request() req: IAuthRequest) {
+  public async handler(
+    @Body() request: { feedId: string; isPrivate: boolean },
+    @Request() req: IAuthRequest
+  ) {
     const { user } = req;
+    const { feedId, isPrivate } = request;
 
-    const data = { feedId, userId: user._id };
+    const data = { feedId, isPrivate, userId: user._id };
 
     const result: IFeedDocument =
       await this.changeFeedPrivacyByIdUseCase.execute(data);

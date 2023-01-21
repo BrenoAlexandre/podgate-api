@@ -37,9 +37,6 @@ export class UpdateUserController extends Controller {
     const { name, lastName, email } = request;
     const { user } = req;
 
-    console.log('validate');
-    console.log('Req user:', user);
-
     const data: IUpdateUserInput = {
       _id: user._id.toString(),
       name,
@@ -47,6 +44,7 @@ export class UpdateUserController extends Controller {
       email,
     };
 
+    //TODO fix
     //! Está esvaziando campos quando enviado vazio
 
     await this.updateUserUseCase.execute(data);

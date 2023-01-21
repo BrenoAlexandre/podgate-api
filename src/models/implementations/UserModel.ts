@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import mongoose, { model, Schema } from 'mongoose';
+import { ObjectId } from 'mongodb';
 import { IUserDocument } from 'models/IUserModel';
 
 const UserSchema = new Schema<IUserDocument>(
@@ -23,10 +24,10 @@ const UserSchema = new Schema<IUserDocument>(
       unique: true,
       select: false,
     },
-    favoritesId: { type: Schema.Types.ObjectId, ref: 'UserFavorites' },
-    subscriptionsId: { type: Schema.Types.ObjectId, ref: 'UserSubscriptions' },
-    casterId: { type: Schema.Types.ObjectId, ref: 'UserCasterProfile' },
-    supportsId: { type: Schema.Types.ObjectId, ref: 'UserSupports' },
+    favoritesId: { type: String, ref: 'UserFavorites' },
+    subscriptionsId: { type: ObjectId, ref: 'UserSubscriptions' },
+    casterId: { type: String, ref: 'UserCasterProfile' },
+    supportsId: { type: String, ref: 'UserSupports' },
   },
   {
     timestamps: true,
@@ -83,6 +84,44 @@ UserSchema.methods.comparePassword = async function (
   if (!user.password) return false;
 
   return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
+};
+
+UserSchema.methods.addFavoritesKey = async function (favoritesId: string) {
+  const user = this as IUserDocument;
+
+  user.favoritesId = favoritesId;
+
+  await user.save();
+  return user;
+};
+
+UserSchema.methods.addSubscriptionsKey = async function (
+  subscriptionsId: string
+) {
+  const user = this as IUserDocument;
+
+  user.subscriptionsId = subscriptionsId;
+
+  await user.save();
+  return user;
+};
+
+UserSchema.methods.addCasterKey = async function (casterId: string) {
+  const user = this as IUserDocument;
+
+  user.casterId = casterId;
+
+  await user.save();
+  return user;
+};
+
+UserSchema.methods.addSupportsKey = async function (supportsId: string) {
+  const user = this as IUserDocument;
+
+  user.supportsId = supportsId;
+
+  await user.save();
+  return user;
 };
 
 const UserModel = model<IUserDocument>('User', UserSchema);
