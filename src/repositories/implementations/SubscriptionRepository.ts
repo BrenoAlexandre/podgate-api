@@ -67,8 +67,6 @@ export default class SubscriptionRepository implements ISubscriptionRepository {
       },
     ]);
 
-    console.log('repo', subscriptionList[0]);
-
     if (subscriptionList.length === 0) return null;
 
     return subscriptionList;

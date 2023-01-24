@@ -6,6 +6,7 @@ import EpisodeRepository from 'repositories/implementations/EpisodeRepository';
 import { IEpisodeInput } from 'models/IEpisodeModel';
 import { parseString } from 'xml2js';
 import axios from 'axios';
+import { fetchFeed } from 'services/fetchFeed';
 
 @singleton()
 export class GetFeedByIdUseCase {
@@ -34,21 +35,9 @@ export class GetFeedByIdUseCase {
     feedId: string,
     feedUrl: string
   ): Promise<void> {
-    const feedData: any = await this.fetchFeedData(feedUrl);
+    const { episodeData } = await fetchFeed(feedUrl);
 
-    const episodes: IEpisodeInput[] = feedData.channel[0].item.map(
-      (episode: any) => {
-        return {
-          photoUrl: episode['itunes:image'][0],
-          title: episode.title[0],
-          description: episode.description[0],
-          length: episode['itunes:duration'][0],
-          pubDate: episode.pubDate[0],
-        };
-      }
-    );
-
-    await this.episodeRepository.updateEpisodes(feedId, episodes);
+    await this.episodeRepository.updateEpisodes(feedId, episodeData);
   }
 
   public async execute(data: { feedId: string }): Promise<IFeedDocument> {

@@ -1,6 +1,7 @@
 import { EStatus } from 'enums';
 import { ICasterInput, ICasterDocument } from 'models/ICasterModel';
 import CasterModel from 'models/implementations/CasterModel';
+import { ObjectId } from 'mongodb';
 import ICasterRepository from 'repositories/ICasterRepository';
 
 export default class CasterRepository implements ICasterRepository {
@@ -13,7 +14,7 @@ export default class CasterRepository implements ICasterRepository {
 
     if (casterProfile) {
       casterProfile.feeds.push({
-        feedId,
+        feedId: new ObjectId(feedId),
         proofUrl,
         status: EStatus.PENDING,
         approvedAt: new Date(),
@@ -46,6 +47,16 @@ export default class CasterRepository implements ICasterRepository {
     return pendingRequest;
   }
 
+  async findPodcastCaster(feedId: ObjectId): Promise<ICasterDocument[] | null> {
+    const caster = await CasterModel.aggregate([
+      { $match: { 'feeds.feedId': feedId, 'feeds.status': EStatus.APPROVED } },
+    ]);
+
+    if (!caster) return null;
+
+    return caster;
+  }
+
   async replyCasterRequest(
     casterId: string,
     feedId: string,
@@ -55,7 +66,10 @@ export default class CasterRepository implements ICasterRepository {
 
     if (!casterProfile) return null;
 
-    const newCasterProfile = casterProfile.updateStatus(feedId, requestStatus);
+    const newCasterProfile = casterProfile.updateStatus(
+      new ObjectId(feedId),
+      requestStatus
+    );
     return newCasterProfile;
   }
 
@@ -68,7 +82,7 @@ export default class CasterRepository implements ICasterRepository {
     if (!casterProfile) return null;
 
     const newCasterProfile = casterProfile.updateStatus(
-      feedId,
+      new ObjectId(feedId),
       EStatus.REVOKED
     );
 

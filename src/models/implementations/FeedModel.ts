@@ -1,4 +1,5 @@
 import { IFeedDocument } from 'models/IFeedModel';
+import { ObjectId } from 'mongodb';
 import { model, Schema } from 'mongoose';
 
 const FeedSchema = new Schema<IFeedDocument>(
@@ -25,8 +26,9 @@ const FeedSchema = new Schema<IFeedDocument>(
       required: true,
     },
     episodesId: {
-      type: String,
+      type: ObjectId,
       required: true,
+      ref: 'Episodes',
     },
     isPrivate: {
       type: Boolean,
@@ -69,6 +71,18 @@ FeedSchema.methods.setPrivateFeed = async function (
 
   if (feedId) feed.privateFeed = feedId;
   else feed.privateFeed = undefined;
+
+  feed.save();
+};
+
+FeedSchema.methods.claimFeed = async function (
+  casterId: ObjectId,
+  isPrivate: boolean
+): Promise<void> {
+  const feed = this as IFeedDocument;
+
+  feed.casterId = casterId;
+  feed.isPrivate = isPrivate;
 
   feed.save();
 };

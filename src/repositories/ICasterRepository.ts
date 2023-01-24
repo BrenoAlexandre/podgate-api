@@ -1,4 +1,5 @@
 import { EStatus } from 'enums';
+import { ObjectId } from 'mongodb';
 import { ICasterDocument, ICasterInput } from 'models/ICasterModel';
 
 export default interface ICasterRepository {
@@ -8,6 +9,7 @@ export default interface ICasterRepository {
     proofUrl,
   }: ICasterInput): Promise<ICasterDocument>;
   getCasterRequests(): Promise<ICasterDocument[]>;
+  findPodcastCaster(feedId: ObjectId): Promise<ICasterDocument[] | null>;
   replyCasterRequest(
     casterId: string,
     feedId: string,

@@ -33,6 +33,7 @@
     "mongodb": "^4.13.0",
     "mongoose": "^6.7.5",
     "morgan": "^1.10.0",
+    "podcast-feed-parser": "^1.0.4",
     "reflect-metadata": "^0.1.13",
     "swagger": "^0.7.5",
     "swagger-ui-express": "^4.5.0",

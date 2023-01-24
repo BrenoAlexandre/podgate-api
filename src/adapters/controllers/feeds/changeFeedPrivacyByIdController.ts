@@ -17,7 +17,7 @@ import { ChangeFeedPrivacyByIdUseCase } from 'adapters/useCases/feeds';
 import { IAuthRequest } from 'interfaces/IAuthRequest';
 
 @injectable()
-@Route('/feed')
+@Route('/feed/private')
 @Tags('/feeds')
 export class ChangeFeedPrivacyByIdController extends Controller {
   constructor(
@@ -29,7 +29,7 @@ export class ChangeFeedPrivacyByIdController extends Controller {
   @SuccessResponse(200, 'Ok')
   @Response(422, 'Unprocessable Entity')
   @Security('bearer')
-  @Put('feedPrivacy/{feedId}')
+  @Put('{feedId}')
   @OperationId('changeFeedPrivacyById')
   public async handler(
     @Path() feedId: string,
@@ -39,7 +39,7 @@ export class ChangeFeedPrivacyByIdController extends Controller {
     const { user } = req;
     const { isPrivate } = request;
 
-    const data = { feedId, isPrivate, userId: user._id };
+    const data = { feedId, userId: user._id.toString(), isPrivate };
 
     const result: IFeedDocument =
       await this.changeFeedPrivacyByIdUseCase.execute(data);

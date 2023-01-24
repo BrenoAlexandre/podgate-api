@@ -12,16 +12,14 @@ import {
 } from '@tsoa/runtime';
 import { IFeedDocument } from '../../../models/IFeedModel';
 import { injectable } from 'tsyringe';
-import { ChangeFeedPrivacyByIdUseCase } from 'adapters/useCases/feeds';
+import { UpdatePrivateFeedUseCase } from 'adapters/useCases/feeds';
 import { IAuthRequest } from 'interfaces/IAuthRequest';
 
 @injectable()
 @Route('/feed/private')
 @Tags('/feeds')
 export class ChangeFeedPrivacyByIdController extends Controller {
-  constructor(
-    private changeFeedPrivacyByIdUseCase: ChangeFeedPrivacyByIdUseCase
-  ) {
+  constructor(private updatePrivateFeedUseCase: UpdatePrivateFeedUseCase) {
     super();
   }
 
@@ -29,18 +27,20 @@ export class ChangeFeedPrivacyByIdController extends Controller {
   @Response(422, 'Unprocessable Entity')
   @Put('feedPrivacy')
   @Security('bearer')
-  @OperationId('changeFeedPrivacyById')
+  @OperationId('updatePrivateFeed')
   public async handler(
-    @Body() request: { feedId: string; isPrivate: boolean },
+    @Body()
+    request: { feedId: string; isPrivate: boolean },
     @Request() req: IAuthRequest
   ) {
     const { user } = req;
     const { feedId, isPrivate } = request;
 
-    const data = { feedId, isPrivate, userId: user._id };
+    const data = { feedId, userId: user._id.toString(), isPrivate };
 
-    const result: IFeedDocument =
-      await this.changeFeedPrivacyByIdUseCase.execute(data);
+    const result: IFeedDocument = await this.updatePrivateFeedUseCase.execute(
+      data
+    );
 
     return result;
   }

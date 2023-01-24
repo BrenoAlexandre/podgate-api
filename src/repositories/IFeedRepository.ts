@@ -1,5 +1,6 @@
 import { getCategoriesResponseDTO } from 'adapters/controllers/feeds/DTOs';
 import { IFeedDocument, IFeedInput } from 'models/IFeedModel';
+import { ObjectId } from 'mongodb';
 
 export default interface IFeedRepository {
   save(feed: IFeedInput): Promise<IFeedDocument | null>;
@@ -9,8 +10,13 @@ export default interface IFeedRepository {
   fetchFeedsByCategory(category: string): Promise<IFeedDocument[] | null>;
   deleteFeedById(id: string): Promise<boolean>;
   changeFeedPrivacy(
-    id: string,
+    feedId: string,
+    casterId: ObjectId,
     privacy: boolean
   ): Promise<IFeedDocument | null>;
-  claimFeed(feedId: string, ownerId: string): Promise<IFeedDocument | null>;
+  claimFeed(
+    feedId: string,
+    casterId: ObjectId,
+    isPrivate: boolean
+  ): Promise<IFeedDocument | null>;
 }

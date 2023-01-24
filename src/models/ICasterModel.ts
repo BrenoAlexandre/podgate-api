@@ -1,22 +1,23 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document } from 'mongoose';
+import { ObjectId } from 'mongodb';
 import { EStatus } from 'enums';
 
 export interface ICasterInput {
-  userId: string;
-  feedId: string;
+  userId: ObjectId;
+  feedId: ObjectId;
   proofUrl: string;
 }
 
 export interface ICasterDocument extends Document {
   _id: ObjectId;
-  userId: string;
+  userId: ObjectId;
   feeds: {
-    feedId: string;
+    feedId: ObjectId;
     proofUrl: string;
     status: EStatus;
     approvedAt: Date;
   }[];
   createdAt: Date;
   updatedAt: Date;
-  updateStatus(feedId: string, newStatus: EStatus): Promise<ICasterDocument>;
+  updateStatus(feedId: ObjectId, newStatus: EStatus): Promise<ICasterDocument>;
 }

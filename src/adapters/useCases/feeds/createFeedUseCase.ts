@@ -1,12 +1,15 @@
+import axios from 'axios';
 import { singleton } from 'tsyringe';
 import { parseString } from 'xml2js';
+import { ObjectId } from 'mongodb';
+
 import { CustomError } from 'config/CustomError';
-import FeedRepository from 'repositories/implementations/FeedRepository';
-import { IFeedDocument } from 'models/IFeedModel';
-import axios from 'axios';
 import { validateUrl } from 'regex/urlValidation';
+import { IFeedDocument } from 'models/IFeedModel';
 import { IEpisodeInput } from 'models/IEpisodeModel';
+import FeedRepository from 'repositories/implementations/FeedRepository';
 import EpisodeRepository from 'repositories/implementations/EpisodeRepository';
+import { fetchFeed } from 'services/fetchFeed';
 
 interface validateProps {
   url: string;
@@ -40,22 +43,6 @@ export class CreateFeedUseCase {
     }
   }
 
-  private fetchFeedData = async (url: string) => {
-    try {
-      const feed = await axios.get(url);
-      return await new Promise((resolve, reject) =>
-        parseString(feed.data, function (err, result) {
-          if (err) {
-            reject(err);
-          }
-          resolve(result.rss);
-        })
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   public async execute(data: { url: string }): Promise<IFeedDocument> {
     const { url } = data;
 
@@ -63,44 +50,17 @@ export class CreateFeedUseCase {
 
     await this.validate({ ...data, alreadyExists });
 
-    const feedData: any = await this.fetchFeedData(url);
-
-    const episodeData: IEpisodeInput[] = feedData.channel[0].item.map(
-      (episode: any) => {
-        return {
-          photoUrl: episode['itunes:image'][0],
-          title: episode.title[0],
-          description: episode.description[0],
-          length: episode['itunes:duration'][0],
-          pubDate: episode.pubDate[0],
-        };
-      }
-    );
+    const { episodeData, feedData } = await fetchFeed(url);
 
     const episodesId = await this.episodeRepository.saveEpisodes(episodeData);
-
     if (!episodesId)
       throw CustomError.badRequest('Unable to create episodes list.');
 
-    const feedInput = {
-      url,
-      title: feedData.channel[0].title[0],
-      description: feedData.channel[0].description[0],
-      photoUrl: feedData.channel[0].image[0].url[0],
-      category: feedData.channel[0]['itunes:category'][0].$.text,
-      episodesId,
-    };
-
+    const feedInput = { url, ...feedData, episodesId };
     const result = await this.feedRepository.save(feedInput);
+    if (!result) throw CustomError.badRequest('Unable to create feed.');
 
-    if (!result) {
-      throw CustomError.badRequest('Unable to create feed.');
-    }
-
-    await this.episodeRepository.updateFeedId(
-      episodesId,
-      result._id.toString()
-    );
+    await this.episodeRepository.updateFeedId(episodesId, result._id);
 
     return result;
   }

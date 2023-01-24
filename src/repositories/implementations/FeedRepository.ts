@@ -1,22 +1,25 @@
 import { getCategoriesResponseDTO } from 'adapters/controllers/feeds/DTOs';
 import { IFeedDocument, IFeedInput } from 'models/IFeedModel';
 import FeedModel from 'models/implementations/FeedModel';
+import { ObjectId } from 'mongodb';
 import IFeedRepository from 'repositories/IFeedRepository';
 
 export default class FeedRepository implements IFeedRepository {
   async save(feed: IFeedInput): Promise<IFeedDocument | null> {
+    console.log(feed);
+
     const newFeed = await FeedModel.create<IFeedInput>(feed);
 
     return newFeed ?? null;
   }
 
   async findFeedByUrl(url: string): Promise<IFeedDocument | null> {
-    const feed = FeedModel.findOne({ url: url });
+    const feed = FeedModel.findOne({ url: url }).populate('episodesId');
     return feed ?? null;
   }
 
   async findFeedById(id: string): Promise<IFeedDocument | null> {
-    const feed = FeedModel.findOne({ _id: id });
+    const feed = FeedModel.findOne({ _id: id }).populate('episodesId');
     return feed ?? null;
   }
 
@@ -42,28 +45,29 @@ export default class FeedRepository implements IFeedRepository {
   }
 
   async changeFeedPrivacy(
-    id: string,
+    feedId: string,
+    casterId: ObjectId,
     privacy: boolean
   ): Promise<IFeedDocument | null> {
-    const feed = await FeedModel.findById(id);
-
+    const feed = await FeedModel.findOne({ _id: feedId, casterId });
     if (!feed) return null;
 
     feed.isPrivate = privacy;
+
     await feed.save();
     return feed;
   }
 
   async claimFeed(
     feedId: string,
-    ownerId: string
+    casterId: ObjectId,
+    isPrivate: boolean
   ): Promise<IFeedDocument | null> {
-    // const user = await UserModel.findById(ownerId); //!Buscar o caster
-    // if (!user) return null;
     const feed = await FeedModel.findById(feedId);
+
     if (!feed) return null;
 
-    // feed.casterId = user._id;
+    feed.claimFeed(new ObjectId(casterId), isPrivate);
 
     return feed;
   }

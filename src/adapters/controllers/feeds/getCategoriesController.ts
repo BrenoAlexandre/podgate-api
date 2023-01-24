@@ -13,7 +13,7 @@ import { GetCategoriesUseCase } from 'adapters/useCases/feeds';
 import { getCategoriesResponseDTO } from './DTOs';
 
 @injectable()
-@Route('/feed')
+@Route('/feed/category')
 @Tags('/feeds')
 export class ChangeFeedPrivacyIdController extends Controller {
   constructor(private getCategoriesUseCase: GetCategoriesUseCase) {

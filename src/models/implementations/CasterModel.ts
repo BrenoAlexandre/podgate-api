@@ -1,12 +1,12 @@
 import { model, Schema } from 'mongoose';
-import { ICasterDocument } from 'models/ICasterModel';
+import { ObjectId } from 'mongodb';
 import { EStatus } from 'enums';
-import { add } from 'date-fns';
+import { ICasterDocument } from 'models/ICasterModel';
 
 const CasterSchema = new Schema<ICasterDocument>(
   {
     userId: {
-      type: String,
+      type: ObjectId,
       ref: 'User',
       required: true,
       unique: true,
@@ -14,7 +14,7 @@ const CasterSchema = new Schema<ICasterDocument>(
     feeds: [
       {
         feedId: {
-          type: String,
+          type: ObjectId,
           ref: 'Feed',
           required: true,
         },
@@ -45,7 +45,7 @@ const CasterSchema = new Schema<ICasterDocument>(
 );
 
 CasterSchema.methods.updateStatus = async function (
-  feedId: string,
+  feedId: ObjectId,
   newStatus: EStatus
 ): Promise<ICasterDocument> {
   const casterProfile = this as ICasterDocument;
@@ -59,6 +59,6 @@ CasterSchema.methods.updateStatus = async function (
   return casterProfile;
 };
 
-const CasterModel = model<ICasterDocument>('UserCasters', CasterSchema);
+const CasterModel = model<ICasterDocument>('Caster', CasterSchema);
 
 export default CasterModel;

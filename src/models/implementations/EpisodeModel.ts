@@ -1,12 +1,12 @@
 import { model, Schema } from 'mongoose';
 import { IEpisodeDocument, IEpisodeInput } from 'models/IEpisodeModel';
+import { ObjectId } from 'mongodb';
 
 const EpisodeSchema = new Schema<IEpisodeDocument>(
   {
     feedId: {
-      type: String,
+      type: ObjectId,
       ref: 'Feed',
-      required: true,
       unique: true,
     },
     episodes: [
@@ -23,11 +23,15 @@ const EpisodeSchema = new Schema<IEpisodeDocument>(
           type: String,
         },
         length: {
-          type: Number,
+          type: String,
           required: true,
         },
         pubDate: {
           type: Date,
+        },
+        audioUrl: {
+          type: String,
+          required: true,
         },
       },
     ],
@@ -72,16 +76,16 @@ EpisodeSchema.methods.addEpisodes = async function (
 };
 
 EpisodeSchema.methods.changeFeedId = async function (
-  feedId: string
+  feedId: ObjectId
 ): Promise<IEpisodeDocument> {
   const episodeList = this as IEpisodeDocument;
 
-  episodeList.feedId = feedId;
+  episodeList.feedId = new ObjectId(feedId);
   episodeList.save();
 
   return episodeList;
 };
 
-const EpisodeModel = model<IEpisodeDocument>('UserEpisodes', EpisodeSchema);
+const EpisodeModel = model<IEpisodeDocument>('Episodes', EpisodeSchema);
 
 export default EpisodeModel;

@@ -1,4 +1,5 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 export interface IFeedInput {
   url: string;
@@ -6,7 +7,7 @@ export interface IFeedInput {
   description: string;
   photoUrl: string;
   category: string;
-  episodesId: string;
+  episodesId: ObjectId;
 }
 
 export interface IFeedDocument extends IFeedInput, Document {
@@ -18,4 +19,5 @@ export interface IFeedDocument extends IFeedInput, Document {
   updated_At?: Date;
   updatePrivacy(isPrivate: boolean): Promise<IFeedDocument>;
   setPrivateFeed(feedId?: string): Promise<void>;
+  claimFeed(casterId: ObjectId, isPrivate: boolean): Promise<void>;
 }
