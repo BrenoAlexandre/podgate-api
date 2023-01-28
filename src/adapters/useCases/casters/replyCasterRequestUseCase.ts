@@ -4,7 +4,7 @@ import { ICasterDocument } from 'models/ICasterModel';
 import { ObjectId } from 'mongodb';
 import CasterRepository from 'repositories/implementations/CasterRepository';
 
-export class replyCasterRequestUseCase {
+export class ReplyCasterRequestUseCase {
   constructor(private casterRepository: CasterRepository) {}
 
   public async execute(data: {

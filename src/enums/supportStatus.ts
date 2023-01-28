@@ -1,6 +1,7 @@
 export enum EStatus {
   REVOKED = 'REVOKED',
   PENDING = 'PENDING',
+  PENDING_REAPPROVAL = 'PENDING',
   APPROVED = 'APPROVED',
   DENIED = 'DENIED',
 }

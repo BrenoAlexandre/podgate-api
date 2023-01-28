@@ -56,6 +56,7 @@ SupportSchema.methods.updateReceipt = async function (
   support.feeds.map((feed) => {
     if (feed.feedId === feedId) {
       feed.receiptUrl = newReceipt;
+      feed.status = EStatus.PENDING_REAPPROVAL;
     }
   });
 

@@ -55,8 +55,8 @@ export default class SupportRepository implements ISupportRepository {
   }
 
   async updateSupportReceipt(
-    supportId: string,
     feedId: string,
+    supportId: string,
     newReceiptUrl: string
   ): Promise<ISupportDocument | null> {
     const supportList = await SupportModel.findById(supportId);
@@ -75,7 +75,19 @@ export default class SupportRepository implements ISupportRepository {
 
     if (!supportList) return null;
 
-    supportList.updateStatus(feedId, EStatus.REVOKED);
+    let expired = false;
+
+    supportList.feeds.map((feed) => {
+      if (feed.feedId === feedId) {
+        if (feed?.expiresAt && feed?.expiresAt < new Date()) {
+          expired = true;
+        }
+      }
+    });
+
+    if (!expired) {
+      supportList.updateStatus(feedId, EStatus.REVOKED);
+    }
     return supportList;
   }
 }
