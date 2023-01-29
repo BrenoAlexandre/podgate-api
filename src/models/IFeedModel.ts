@@ -13,11 +13,15 @@ export interface IFeedInput {
 export interface IFeedDocument extends IFeedInput, Document {
   _id: ObjectId;
   isPrivate: boolean;
-  privateFeed?: string;
+  privateFeed?: ObjectId;
   casterId: ObjectId;
   created_At?: Date;
   updated_At?: Date;
   updatePrivacy(isPrivate: boolean): Promise<IFeedDocument>;
-  setPrivateFeed(feedId?: string): Promise<void>;
-  claimFeed(casterId: ObjectId, isPrivate: boolean): Promise<void>;
+  setPrivateFeed(feedId?: ObjectId): Promise<void>;
+  claimFeed(
+    attachTo: ObjectId,
+    casterId: ObjectId,
+    isPrivate: boolean
+  ): Promise<void>;
 }

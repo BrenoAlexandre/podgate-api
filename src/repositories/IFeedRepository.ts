@@ -16,6 +16,7 @@ export default interface IFeedRepository {
   ): Promise<IFeedDocument | null>;
   claimFeed(
     feedId: string,
+    attachTo: ObjectId,
     casterId: ObjectId,
     isPrivate: boolean
   ): Promise<IFeedDocument | null>;

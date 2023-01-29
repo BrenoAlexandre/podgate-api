@@ -1,5 +1,5 @@
 import { Document, ObjectId } from 'mongoose';
-import { EStatus } from 'enums';
+import { EStatus } from '../../../enums';
 
 export interface SupportFeed {
   feedId: string;

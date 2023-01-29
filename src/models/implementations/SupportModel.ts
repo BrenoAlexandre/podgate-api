@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { ISupportDocument } from 'models/ISupportModel';
-import { EStatus } from 'enums';
+import { EStatus } from '../../enums';
 import { add } from 'date-fns';
 
 const SupportSchema = new Schema<ISupportDocument>(

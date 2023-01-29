@@ -10,13 +10,15 @@ export class UpdatePrivateFeedUseCase {
 
   public async execute(data: {
     feedId: string;
+    attachTo: string;
     userId: string;
     isPrivate: boolean;
   }): Promise<IFeedDocument> {
-    const { feedId, userId, isPrivate } = data;
+    const { feedId, attachTo, userId, isPrivate } = data;
 
     const feed = await this.feedRepository.claimFeed(
       feedId,
+      new ObjectId(attachTo),
       new ObjectId(userId),
       isPrivate
     );

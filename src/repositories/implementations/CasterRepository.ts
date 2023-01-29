@@ -1,4 +1,4 @@
-import { EStatus } from 'enums';
+import { EStatus } from '../../enums';
 import { ICasterInput, ICasterDocument } from 'models/ICasterModel';
 import CasterModel from 'models/implementations/CasterModel';
 import { ObjectId } from 'mongodb';

@@ -26,6 +26,22 @@ export default class FeedRepository implements IFeedRepository {
   async fetchCategories(): Promise<getCategoriesResponseDTO[] | null> {
     const categories = await FeedModel.aggregate([
       { $group: { _id: '$category', feeds: { $push: '$$ROOT' } } },
+      {
+        $lookup: {
+          from: 'episodes',
+          localField: 'episodesId',
+          foreignField: '_id',
+          as: 'episodes',
+        },
+      },
+      {
+        $lookup: {
+          from: 'casters',
+          localField: 'casterId',
+          foreignField: '_id',
+          as: 'caster',
+        },
+      },
     ]);
 
     return categories;
@@ -60,6 +76,7 @@ export default class FeedRepository implements IFeedRepository {
 
   async claimFeed(
     feedId: string,
+    attachTo: ObjectId,
     casterId: ObjectId,
     isPrivate: boolean
   ): Promise<IFeedDocument | null> {
@@ -67,7 +84,13 @@ export default class FeedRepository implements IFeedRepository {
 
     if (!feed) return null;
 
-    feed.claimFeed(new ObjectId(casterId), isPrivate);
+    await feed.claimFeed(attachTo, new ObjectId(casterId), isPrivate);
+
+    const attachedFeed = await FeedModel.findById(attachTo);
+
+    if (attachedFeed) {
+      await attachedFeed.setPrivateFeed(feed._id);
+    }
 
     return feed;
   }

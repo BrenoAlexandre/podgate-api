@@ -1,5 +1,5 @@
 import { CustomError } from 'config/CustomError';
-import { EStatus } from 'enums';
+import { EStatus } from '../../../enums';
 import { ISupportDocument } from 'models/ISupportModel';
 import SupportRepository from 'repositories/implementations/SupportRepository';
 

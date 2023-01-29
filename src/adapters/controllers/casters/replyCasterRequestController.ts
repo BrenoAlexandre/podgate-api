@@ -11,7 +11,7 @@ import {
 } from '@tsoa/runtime';
 import { ReplyCasterRequestUseCase } from 'adapters/useCases/casters';
 import { injectable } from 'tsyringe';
-import { EStatus } from 'enums';
+import { EStatus } from '../../../enums';
 
 @injectable()
 @Route('/caster')

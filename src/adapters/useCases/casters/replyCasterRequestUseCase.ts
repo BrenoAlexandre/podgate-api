@@ -1,5 +1,5 @@
 import { CustomError } from 'config/CustomError';
-import { EStatus } from 'enums';
+import { EStatus } from '../../../enums';
 import { ICasterDocument } from 'models/ICasterModel';
 import { ObjectId } from 'mongodb';
 import CasterRepository from 'repositories/implementations/CasterRepository';

@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { EStatus } from 'enums';
+import { EStatus } from '../../enums';
 import { ICasterDocument } from 'models/ICasterModel';
 
 const CasterSchema = new Schema<ICasterDocument>(

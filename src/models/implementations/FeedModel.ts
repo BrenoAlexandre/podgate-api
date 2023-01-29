@@ -65,7 +65,7 @@ FeedSchema.methods.updatePrivacy = async function (
 };
 
 FeedSchema.methods.setPrivateFeed = async function (
-  feedId?: string
+  feedId?: ObjectId
 ): Promise<void> {
   const feed = this as IFeedDocument;
 

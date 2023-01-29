@@ -30,13 +30,13 @@ export class ChangeFeedPrivacyByIdController extends Controller {
   @OperationId('updatePrivateFeed')
   public async handler(
     @Body()
-    request: { feedId: string; isPrivate: boolean },
+    request: { feedId: string; attachTo?: string; isPrivate: boolean },
     @Request() req: IAuthRequest
   ) {
     const { user } = req;
-    const { feedId, isPrivate } = request;
+    const { feedId, attachTo = '', isPrivate } = request;
 
-    const data = { feedId, userId: user._id.toString(), isPrivate };
+    const data = { feedId, attachTo, userId: user._id.toString(), isPrivate };
 
     const result: IFeedDocument = await this.updatePrivateFeedUseCase.execute(
       data

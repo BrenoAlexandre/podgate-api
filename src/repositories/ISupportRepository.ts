@@ -1,4 +1,4 @@
-import { EStatus } from 'enums';
+import { EStatus } from '../enums';
 import { ISupportDocument } from 'models/ISupportModel';
 
 export default interface ISupportRepository {

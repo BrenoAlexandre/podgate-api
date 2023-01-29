@@ -11,7 +11,7 @@ import {
 } from '@tsoa/runtime';
 import { ReplySupportRequestUseCase } from 'adapters/useCases/supports';
 import { injectable } from 'tsyringe';
-import { EStatus } from 'enums';
+import { EStatus } from '../../../enums';
 
 @injectable()
 @Route('/support')

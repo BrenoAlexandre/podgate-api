@@ -1,4 +1,4 @@
-import { EStatus } from 'enums';
+import { EStatus } from '../../enums';
 import SupportModel from 'models/implementations/SupportModel';
 import { ISupportDocument } from 'models/ISupportModel';
 import ISupportRepository from 'repositories/ISupportRepository';

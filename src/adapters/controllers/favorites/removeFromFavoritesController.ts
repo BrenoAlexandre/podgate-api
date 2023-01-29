@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   OperationId,
   Response,
   Request,
@@ -9,6 +8,7 @@ import {
   SuccessResponse,
   Tags,
   Security,
+  Put,
 } from '@tsoa/runtime';
 import { injectable } from 'tsyringe';
 import { RemoveFromFavoritesUseCase } from 'adapters/useCases/favorites';
@@ -26,7 +26,7 @@ export class RemoveFromFavoritesController extends Controller {
   @SuccessResponse(200, 'Ok')
   @Response(422, 'Unprocessable Entity')
   @Security('bearer')
-  @Delete()
+  @Put()
   @OperationId('addFavorite')
   public async handler(
     @Body() request: { feedId: string },
