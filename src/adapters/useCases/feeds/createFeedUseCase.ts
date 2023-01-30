@@ -1,12 +1,7 @@
-import axios from 'axios';
 import { singleton } from 'tsyringe';
-import { parseString } from 'xml2js';
-import { ObjectId } from 'mongodb';
-
 import { CustomError } from 'config/CustomError';
 import { validateUrl } from 'regex/urlValidation';
 import { IFeedDocument } from 'models/IFeedModel';
-import { IEpisodeInput } from 'models/IEpisodeModel';
 import FeedRepository from 'repositories/implementations/FeedRepository';
 import EpisodeRepository from 'repositories/implementations/EpisodeRepository';
 import { fetchFeed } from 'services/fetchFeed';

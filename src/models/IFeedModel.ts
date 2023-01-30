@@ -5,6 +5,7 @@ export interface IFeedInput {
   url: string;
   title: string;
   description: string;
+  author: string;
   photoUrl: string;
   category: string;
   episodesId: ObjectId;

@@ -45,6 +45,10 @@ const formatData = (feedJson: any) => {
   const feedData = {
     title: feedJson.channel[0].title[0],
     description: feedJson.channel[0].description[0],
+    author:
+      typeof feedJson.channel[0].author == 'undefined'
+        ? feedJson.channel[0]['itunes:author'][0]
+        : feedJson.channel[0].author[0],
     photoUrl: feedJson.channel[0].image[0].url[0],
     category: feedJson.channel[0]['itunes:category'][0].$.text,
   };

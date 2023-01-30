@@ -17,6 +17,10 @@ const FeedSchema = new Schema<IFeedDocument>(
       type: String,
       required: true,
     },
+    author: {
+      type: String,
+      required: true,
+    },
     photoUrl: {
       type: String,
       required: true,

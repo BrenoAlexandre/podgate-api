@@ -25,7 +25,6 @@ export default class FeedRepository implements IFeedRepository {
 
   async fetchCategories(): Promise<getCategoriesResponseDTO[] | null> {
     const categories = await FeedModel.aggregate([
-      { $group: { _id: '$category', feeds: { $push: '$$ROOT' } } },
       {
         $lookup: {
           from: 'episodes',
@@ -42,6 +41,7 @@ export default class FeedRepository implements IFeedRepository {
           as: 'caster',
         },
       },
+      { $group: { _id: '$category', feeds: { $push: '$$ROOT' } } },
     ]);
 
     return categories;
