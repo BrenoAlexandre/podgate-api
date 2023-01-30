@@ -40,8 +40,8 @@ const FeedSchema = new Schema<IFeedDocument>(
       default: false,
     },
     privateFeed: {
-      type: String,
-      unique: true,
+      type: ObjectId,
+      ref: 'Feeds',
     },
     casterId: { type: Schema.Types.ObjectId, ref: 'feedCaster' },
   },

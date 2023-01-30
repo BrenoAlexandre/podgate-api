@@ -6,8 +6,6 @@ import IFeedRepository from 'repositories/IFeedRepository';
 
 export default class FeedRepository implements IFeedRepository {
   async save(feed: IFeedInput): Promise<IFeedDocument | null> {
-    console.log(feed);
-
     const newFeed = await FeedModel.create<IFeedInput>(feed);
 
     return newFeed ?? null;
@@ -41,7 +39,14 @@ export default class FeedRepository implements IFeedRepository {
           as: 'caster',
         },
       },
-      { $group: { _id: '$category', feeds: { $push: '$$ROOT' } } },
+      {
+        $group: {
+          _id: '$category',
+          feeds: { $push: '$$ROOT' },
+          feedCount: { $sum: 1 },
+        },
+      },
+      { $sort: { feedCount: -1 } },
     ]);
 
     return categories;

@@ -51,7 +51,7 @@ export class CreateFeedUseCase {
     if (!episodesId)
       throw CustomError.badRequest('Unable to create episodes list.');
 
-    const feedInput = { url, ...feedData, episodesId };
+    const feedInput = { url, ...feedData, episodesId, privateFeed: null };
     const result = await this.feedRepository.save(feedInput);
     if (!result) throw CustomError.badRequest('Unable to create feed.');
 
