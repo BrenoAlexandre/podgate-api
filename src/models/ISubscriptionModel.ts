@@ -1,4 +1,4 @@
-import { Document, Schema } from 'mongoose';
+import { Document } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 export interface ISubscriptionDocument extends Document {

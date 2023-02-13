@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { EStatus } from '../../../enums';
+import { EStatus } from '../enums';
 
 export interface ICasterInput {
   userId: ObjectId;
