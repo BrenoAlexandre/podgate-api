@@ -7,10 +7,12 @@ import swaggerDocs from 'config/swagger';
 import Logger from 'config/logger';
 import 'config/mongo';
 
+const corsOptions = { exposedHeaders: 'authorization' };
+
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.options('*', cors());
 app.listen(process.env.PORT, () =>
   Logger.info('Server is running on port 3001!')
