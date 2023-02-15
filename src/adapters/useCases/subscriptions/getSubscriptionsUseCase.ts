@@ -14,8 +14,6 @@ export class GetSubscriptionsUseCase {
       userId
     );
 
-    console.log(subscriptions);
-
     if (!subscriptions)
       throw CustomError.unprocess('Unable find subscription list');
 
