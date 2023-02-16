@@ -7,6 +7,7 @@ export default interface ISupportRepository {
     feedId: string,
     receiptUrl: string
   ): Promise<ISupportDocument>;
+  getUserSupports(userId: string): Promise<any[] | null>;
   getSupportRequests(feedId: string): Promise<ISupportDocument[]>;
   replySupportRequest(
     supportId: string,

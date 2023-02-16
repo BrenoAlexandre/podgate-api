@@ -1,12 +1,16 @@
 import { CustomError } from 'config/CustomError';
 import { ISupportDocument } from 'models/ISupportModel';
 import SupportRepository from 'repositories/implementations/SupportRepository';
+import { singleton } from 'tsyringe';
 
+@singleton()
 export class GetSupportRequestsUseCase {
   constructor(private supportRepository: SupportRepository) {}
 
-  public async execute(): Promise<ISupportDocument[]> {
-    const supportClaims = await this.supportRepository.getSupportRequests();
+  public async execute(feedId: string): Promise<ISupportDocument[]> {
+    const supportClaims = await this.supportRepository.getSupportRequests(
+      feedId
+    );
 
     if (!supportClaims) throw CustomError.notFound('No claims found');
 

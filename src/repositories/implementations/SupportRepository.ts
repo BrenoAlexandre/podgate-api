@@ -2,6 +2,7 @@ import { EStatus } from '../../enums';
 import SupportModel from 'models/implementations/SupportModel';
 import { ISupportDocument } from 'models/ISupportModel';
 import ISupportRepository from 'repositories/ISupportRepository';
+import { ObjectId } from 'mongodb';
 
 export default class SupportRepository implements ISupportRepository {
   async submitSupportRequest(
@@ -33,9 +34,37 @@ export default class SupportRepository implements ISupportRepository {
     return newSupportList;
   }
 
-  async getSupportRequests(): Promise<ISupportDocument[]> {
+  async getUserSupports(userId: string): Promise<any[] | null> {
+    const supports = await SupportModel.aggregate([
+      { $match: { userId: new ObjectId(userId) } },
+      {
+        $lookup: {
+          from: 'feeds',
+          localField: 'feeds.feedId',
+          foreignField: '_id',
+          as: 'feeds',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          userId: 1,
+          feedsId: 1,
+          feeds: 1,
+          created_at: 1,
+          updated_at: 1,
+        },
+      },
+    ]);
+
+    if (supports.length === 0) return null;
+
+    return supports;
+  }
+
+  async getSupportRequests(feedId: string): Promise<ISupportDocument[]> {
     const pendingSupports = await SupportModel.aggregate([
-      { $match: { 'feeds.status': EStatus.PENDING } },
+      { $match: { 'feeds.feedId': feedId, 'feeds.status': EStatus.PENDING } },
     ]);
 
     return pendingSupports;

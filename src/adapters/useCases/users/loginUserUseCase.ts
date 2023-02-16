@@ -38,6 +38,8 @@ export class LoginUserUseCase {
       throw CustomError.authorization('Invalid login.');
     }
 
+    delete result.password;
+
     const authorization = signJwt(result.toObject(), { expiresIn: 15000 });
 
     return authorization;
