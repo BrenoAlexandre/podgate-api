@@ -7,10 +7,13 @@ import { singleton } from 'tsyringe';
 export class RevokeSupportStatusUseCase {
   constructor(private supportRepository: SupportRepository) {}
 
-  public async execute(
-    supportId: string,
-    feedId: string
-  ): Promise<ISupportDocument> {
+  public async execute({
+    feedId,
+    supportId,
+  }: {
+    supportId: string;
+    feedId: string;
+  }): Promise<ISupportDocument> {
     const revokedSupport = await this.supportRepository.revokeSupport(
       supportId,
       feedId

@@ -5,10 +5,8 @@ import SupportRepository from 'repositories/implementations/SupportRepository';
 export class GetSupportRequestsUseCase {
   constructor(private supportRepository: SupportRepository) {}
 
-  public async execute(feedId: string): Promise<ISupportDocument[]> {
-    const supportClaims = await this.supportRepository.getSupportRequests(
-      feedId
-    );
+  public async execute(): Promise<ISupportDocument[]> {
+    const supportClaims = await this.supportRepository.getSupportRequests();
 
     if (!supportClaims) throw CustomError.notFound('No claims found');
 

@@ -7,8 +7,8 @@ import {
   SuccessResponse,
   Tags,
   Security,
-  Post,
 } from '@tsoa/runtime';
+import { Get } from '@tsoa/runtime/dist/decorators/methods';
 import { GetSupportRequestsUseCase } from 'adapters/useCases/supports';
 import { injectable } from 'tsyringe';
 
@@ -22,13 +22,11 @@ export class GetSupportRequestsController extends Controller {
 
   @SuccessResponse(200, 'Ok')
   @Response(404, 'Not Found')
-  @Post('fetch')
+  @Get()
   @Security('bearer')
   @OperationId('getSupportRequests')
-  public async handler(@Body() request: { feedId: string }) {
-    const { feedId } = request;
-
-    const result = await this.getSupportRequestsUseCase.execute(feedId);
+  public async handler() {
+    const result = await this.getSupportRequestsUseCase.execute();
 
     return result;
   }

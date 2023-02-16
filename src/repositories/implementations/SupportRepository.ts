@@ -33,9 +33,9 @@ export default class SupportRepository implements ISupportRepository {
     return newSupportList;
   }
 
-  async getSupportRequests(feedId: string): Promise<ISupportDocument[]> {
+  async getSupportRequests(): Promise<ISupportDocument[]> {
     const pendingSupports = await SupportModel.aggregate([
-      { $match: { 'feeds.feedId': feedId, 'feeds.status': EStatus.PENDING } },
+      { $match: { 'feeds.status': EStatus.PENDING } },
     ]);
 
     return pendingSupports;
