@@ -22,7 +22,6 @@ const UserSchema = new Schema<IUserDocument>(
       type: String,
       required: true,
       unique: true,
-      select: false,
     },
     favoritesId: { type: String, ref: 'UserFavorites' },
     subscriptionsId: { type: ObjectId, ref: 'UserSubscriptions' },
@@ -83,7 +82,7 @@ UserSchema.methods.comparePassword = async function (
   // only compare the password if it exists
   if (!user.password) return false;
 
-  return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
+  return await bcrypt.compare(candidatePassword, user.password);
 };
 
 UserSchema.methods.addFavoritesKey = async function (favoritesId: string) {
