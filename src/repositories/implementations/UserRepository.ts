@@ -25,8 +25,10 @@ export default class UserRepository implements IUserRepository {
   }: ILoginInput): Promise<IUserDocument | null> {
     const user = await UserModel.findOne({ email }, { lean: false });
     if (!user) return null;
-    const isValid = user.comparePassword(password);
+
+    const isValid = await user.comparePassword(password);
     if (!isValid) return null;
+
     return user;
   }
 
