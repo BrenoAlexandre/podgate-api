@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose';
 import { ISupportDocument } from 'models/ISupportModel';
 import { EStatus } from '../../enums';
 import { add } from 'date-fns';
+import { ObjectId } from 'mongodb';
 
 const SupportSchema = new Schema<ISupportDocument>(
   {
@@ -14,7 +15,7 @@ const SupportSchema = new Schema<ISupportDocument>(
     feeds: [
       {
         feedId: {
-          type: String,
+          type: ObjectId,
           ref: 'Feed',
           required: true,
         },
@@ -54,7 +55,7 @@ SupportSchema.methods.updateReceipt = async function (
   const support = this as ISupportDocument;
 
   support.feeds.map((feed) => {
-    if (feed.feedId === feedId) {
+    if (feed.feedId === new ObjectId(feedId)) {
       feed.receiptUrl = newReceipt;
       feed.status = EStatus.PENDING_REAPPROVAL;
     }
@@ -72,7 +73,7 @@ SupportSchema.methods.updateStatus = async function (
   const support = this as ISupportDocument;
 
   support.feeds.map((feed) => {
-    if (feed.feedId === feedId) {
+    if (feed.feedId === new ObjectId(feedId)) {
       feed.status = newStatus;
 
       if (newStatus === EStatus.APPROVED) {

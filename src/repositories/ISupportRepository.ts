@@ -1,10 +1,11 @@
 import { EStatus } from '../enums';
 import { ISupportDocument } from 'models/ISupportModel';
+import { ObjectId } from 'mongodb';
 
 export default interface ISupportRepository {
   submitSupportRequest(
     userId: string,
-    feedId: string,
+    feedId: ObjectId,
     receiptUrl: string
   ): Promise<ISupportDocument>;
   getUserSupports(userId: string): Promise<any[] | null>;

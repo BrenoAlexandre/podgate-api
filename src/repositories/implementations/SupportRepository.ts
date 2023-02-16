@@ -7,13 +7,17 @@ import { ObjectId } from 'mongodb';
 export default class SupportRepository implements ISupportRepository {
   async submitSupportRequest(
     userId: string,
-    feedId: string,
+    feedId: ObjectId,
     receiptUrl: string
   ): Promise<ISupportDocument> {
     const supportList = await SupportModel.findOne({ userId });
 
     if (supportList) {
-      supportList.feeds.push({ feedId, receiptUrl, status: EStatus.PENDING });
+      supportList.feeds.push({
+        feedId,
+        receiptUrl,
+        status: EStatus.PENDING,
+      });
 
       await supportList.save();
       return supportList;
@@ -36,26 +40,30 @@ export default class SupportRepository implements ISupportRepository {
 
   async getUserSupports(userId: string): Promise<any[] | null> {
     const supports = await SupportModel.aggregate([
-      { $match: { userId: new ObjectId(userId) } },
+      { $match: { userId: userId } },
+      // { $unwind: { path: '$feeds' } },
       {
         $lookup: {
           from: 'feeds',
           localField: 'feeds.feedId',
           foreignField: '_id',
-          as: 'feeds',
+          as: 'supports',
         },
       },
-      {
-        $project: {
-          _id: 1,
-          userId: 1,
-          feedsId: 1,
-          feeds: 1,
-          created_at: 1,
-          updated_at: 1,
-        },
-      },
+
+      // {
+      //   $project: {
+      //     _id: 1,
+      //     userId: 1,
+      //     feeds: 1,
+      //     supports: 1,
+      //     createdAt: 1,
+      //     updatedAt: 1,
+      //   },
+      // },
     ]);
+
+    console.log('supports', supports[0]);
 
     if (supports.length === 0) return null;
 
@@ -107,7 +115,7 @@ export default class SupportRepository implements ISupportRepository {
     let expired = false;
 
     supportList.feeds.map((feed) => {
-      if (feed.feedId === feedId) {
+      if (feed.feedId === new ObjectId(feedId)) {
         if (feed?.expiresAt && feed?.expiresAt < new Date()) {
           expired = true;
         }

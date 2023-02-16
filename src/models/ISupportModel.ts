@@ -1,8 +1,9 @@
-import { Document, ObjectId } from 'mongoose';
+import { ObjectId } from 'mongodb';
+import { Document } from 'mongoose';
 import { EStatus } from '../enums';
 
 export interface SupportFeed {
-  feedId: string;
+  feedId: ObjectId;
   receiptUrl: string;
   status: EStatus;
   approvedAt?: Date;
