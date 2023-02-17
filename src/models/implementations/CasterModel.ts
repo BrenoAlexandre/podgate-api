@@ -50,11 +50,8 @@ CasterSchema.methods.updateStatus = async function (
 ): Promise<ICasterDocument> {
   const casterProfile = this as ICasterDocument;
 
-  console.log('feedId:', feedId);
-
   casterProfile.feeds.map((feed) => {
     if (feed.feedId.toString() === feedId.toString()) {
-      console.log(feed);
       feed.status = newStatus;
     }
   });

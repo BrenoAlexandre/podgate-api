@@ -5,6 +5,7 @@ import { IFeedDocument } from 'models/IFeedModel';
 import FeedRepository from 'repositories/implementations/FeedRepository';
 import EpisodeRepository from 'repositories/implementations/EpisodeRepository';
 import { fetchFeed } from 'services/fetchFeed';
+import { ObjectId } from 'mongodb';
 
 interface validateProps {
   url: string;
@@ -51,7 +52,12 @@ export class CreateFeedUseCase {
     if (!episodesId)
       throw CustomError.badRequest('Unable to create episodes list.');
 
-    const feedInput = { url, ...feedData, episodesId, privateFeed: null };
+    const feedInput = {
+      url,
+      ...feedData,
+      episodesId,
+      privateFeed: new ObjectId('63ef1638e35b970c4f18da02'),
+    };
     const result = await this.feedRepository.save(feedInput);
     if (!result) throw CustomError.badRequest('Unable to create feed.');
 

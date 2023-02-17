@@ -41,7 +41,6 @@ export default class SupportRepository implements ISupportRepository {
   async getUserSupports(userId: string): Promise<any[] | null> {
     const supports = await SupportModel.aggregate([
       { $match: { userId: userId } },
-      // { $unwind: { path: '$feeds' } },
       {
         $lookup: {
           from: 'feeds',
@@ -50,17 +49,6 @@ export default class SupportRepository implements ISupportRepository {
           as: 'supports',
         },
       },
-
-      // {
-      //   $project: {
-      //     _id: 1,
-      //     userId: 1,
-      //     feeds: 1,
-      //     supports: 1,
-      //     createdAt: 1,
-      //     updatedAt: 1,
-      //   },
-      // },
     ]);
 
     if (supports.length === 0) return null;

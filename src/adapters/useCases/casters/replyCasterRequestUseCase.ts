@@ -19,14 +19,15 @@ export class ReplyCasterRequestUseCase {
     requestStatus: EStatus;
   }): Promise<ICasterDocument> {
     const { casterId, feedId, requestStatus } = data;
-    console.log(data);
 
-    const alreadyClaimed = await this.casterRepository.findPodcastCaster(
-      new ObjectId(feedId)
-    );
+    if (requestStatus === 'APPROVED') {
+      const alreadyClaimed = await this.casterRepository.findPodcastCaster(
+        new ObjectId(feedId)
+      );
 
-    if (!!alreadyClaimed?.length)
-      throw CustomError.unprocess('Feed already claimed');
+      if (!!alreadyClaimed?.length)
+        throw CustomError.unprocess('Feed already claimed');
+    }
 
     const repliedClaim = await this.casterRepository.replyCasterRequest(
       casterId,
@@ -36,7 +37,7 @@ export class ReplyCasterRequestUseCase {
 
     if (!repliedClaim) throw CustomError.notFound('Claim not found');
 
-    if (requestStatus === EStatus.APPROVED) {
+    if (requestStatus === 'APPROVED') {
       const feed = await this.feedRepository.findFeedById(feedId);
 
       if (!feed) throw CustomError.notFound('Claimed feed not found');

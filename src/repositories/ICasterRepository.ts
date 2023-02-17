@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import { ICasterDocument, ICasterInput } from 'models/ICasterModel';
 
 export default interface ICasterRepository {
+  findCaster(casterId: string): Promise<ICasterDocument | null>;
   submitCasterRequest({
     userId,
     feedId,

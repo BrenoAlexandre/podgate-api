@@ -13,7 +13,6 @@ const FavoriteSchema = new Schema<IFavoriteDocument>(
       type: [String],
       ref: 'Feed',
       required: true,
-      unique: true,
     },
   },
   {

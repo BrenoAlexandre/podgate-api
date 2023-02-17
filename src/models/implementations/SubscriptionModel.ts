@@ -15,7 +15,6 @@ const SubscriptionSchema = new Schema<ISubscriptionDocument>(
         type: ObjectId,
         ref: 'Feed',
         required: true,
-        unique: true,
       },
     ],
   },

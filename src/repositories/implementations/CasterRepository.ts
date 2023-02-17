@@ -5,6 +5,15 @@ import { ObjectId } from 'mongodb';
 import ICasterRepository from 'repositories/ICasterRepository';
 
 export default class CasterRepository implements ICasterRepository {
+  async findCaster(casterId: string): Promise<ICasterDocument | null> {
+    const caster = await CasterModel.findOne({
+      userId: new ObjectId(casterId),
+    });
+
+    if (!caster) return null;
+
+    return caster;
+  }
   async submitCasterRequest({
     userId,
     feedId,
