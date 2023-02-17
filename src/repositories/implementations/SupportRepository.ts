@@ -63,8 +63,6 @@ export default class SupportRepository implements ISupportRepository {
       // },
     ]);
 
-    console.log('supports', supports[0]);
-
     if (supports.length === 0) return null;
 
     return supports;

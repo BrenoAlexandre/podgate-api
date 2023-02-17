@@ -79,14 +79,18 @@ FeedSchema.methods.setPrivateFeed = async function (
   feed.save();
 };
 
-FeedSchema.methods.claimFeed = async function (
-  casterId: ObjectId,
-  isPrivate: boolean
-): Promise<void> {
+FeedSchema.methods.claimFeed = async function (data: {
+  casterId: ObjectId;
+  attachTo?: ObjectId;
+  isPrivate?: boolean;
+}): Promise<void> {
+  const { casterId, isPrivate = false } = data;
   const feed = this as IFeedDocument;
 
   feed.casterId = casterId;
-  feed.isPrivate = isPrivate;
+  if (isPrivate) {
+    feed.isPrivate = isPrivate;
+  }
 
   feed.save();
 };

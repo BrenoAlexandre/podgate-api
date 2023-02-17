@@ -20,9 +20,5 @@ export interface IFeedDocument extends IFeedInput, Document {
   updated_At?: Date;
   updatePrivacy(isPrivate: boolean): Promise<IFeedDocument>;
   setPrivateFeed(feedId?: ObjectId): Promise<void>;
-  claimFeed(
-    attachTo: ObjectId,
-    casterId: ObjectId,
-    isPrivate: boolean
-  ): Promise<void>;
+  claimFeed(data: { casterId: ObjectId; isPrivate?: boolean }): Promise<void>;
 }

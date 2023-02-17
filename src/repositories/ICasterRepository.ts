@@ -8,7 +8,7 @@ export default interface ICasterRepository {
     feedId,
     proofUrl,
   }: ICasterInput): Promise<ICasterDocument>;
-  getCasterRequests(): Promise<ICasterDocument[]>;
+  getCasterRequests(): Promise<any[] | null>;
   findPodcastCaster(feedId: ObjectId): Promise<ICasterDocument[] | null>;
   replyCasterRequest(
     casterId: string,

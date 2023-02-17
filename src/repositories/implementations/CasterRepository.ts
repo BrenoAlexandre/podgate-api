@@ -39,10 +39,20 @@ export default class CasterRepository implements ICasterRepository {
     return newCaster;
   }
 
-  async getCasterRequests(): Promise<ICasterDocument[]> {
+  async getCasterRequests(): Promise<any[] | null> {
     const pendingRequest = await CasterModel.aggregate([
       { $match: { 'feeds.status': EStatus.PENDING } },
+      {
+        $lookup: {
+          from: 'feeds',
+          localField: 'feeds.feedId',
+          foreignField: '_id',
+          as: 'claimedFeeds',
+        },
+      },
     ]);
+
+    if (pendingRequest.length === 0) return null;
 
     return pendingRequest;
   }
@@ -62,7 +72,7 @@ export default class CasterRepository implements ICasterRepository {
     feedId: string,
     requestStatus: EStatus
   ): Promise<ICasterDocument | null> {
-    const casterProfile = await CasterModel.findOne({ casterId });
+    const casterProfile = await CasterModel.findOne({ _id: casterId });
 
     if (!casterProfile) return null;
 
